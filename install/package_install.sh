@@ -4,14 +4,12 @@
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
 
-formulas=(
-    # flags should pass through the the `brew list check`
-    git
+formulas="git
     tmux
     tree
     wget
     zsh
-)
+"
 
  if cat /etc/*release | grep ^NAME | grep CentOS; then
     echo "==============================================="
