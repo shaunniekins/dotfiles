@@ -1,64 +1,63 @@
 #!/bin/sh
+# Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
-## Script to install tmux,zsh,oh-my-zsh
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
 
-formulas="vim
+package_to_install="vim
     tmux
     tree
     wget
     zsh
 "
-
  if cat /etc/*release | grep ^NAME | grep CentOS; then
     echo "==============================================="
-    echo "Installing packages $formulas on CentOS"
+    echo "Installing packages $package_to_install on CentOS"
     echo "==============================================="
-    yum install -y $formulas
+    yum install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Red; then
     echo "==============================================="
-    echo "Installing packages $formulas on RedHat"
+    echo "Installing packages $package_to_install on RedHat"
     echo "==============================================="
-    yum install -y $formulas
+    yum install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Fedora; then
     echo "================================================"
-    echo "Installing packages $formulas on Fedorea"
+    echo "Installing packages $package_to_install on Fedorea"
     echo "================================================"
-    yum install -y $formulas
+    yum install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Ubuntu; then
     echo "==============================================="
-    echo "Installing packages $formulas on Ubuntu"
+    echo "Installing packages $package_to_install on Ubuntu"
     echo "==============================================="
     apt-get update
-    apt-get install -y $formulas
+    apt-get install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Debian ; then
     echo "==============================================="
-    echo "Installing packages $formulas on Debian"
+    echo "Installing packages $package_to_install on Debian"
     echo "==============================================="
     apt-get update
-    apt-get install -y $formulas
+    apt-get install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Mint ; then
     echo "============================================="
-    echo "Installing packages $formulas on Mint"
+    echo "Installing packages $package_to_install on Mint"
     echo "============================================="
     apt-get update
-    apt-get install -y $formulas
+    apt-get install -y $package_to_install
  elif cat /etc/*release | grep ^NAME | grep Knoppix ; then
     echo "================================================="
-    echo "Installing packages $formulas on Kanoppix"
+    echo "Installing packages $package_to_install on Kanoppix"
     echo "================================================="
     apt-get update
-    apt-get install -y $formulas
+    apt-get install -y $package_to_install
  elif uname -s | grep Darwin ; then
     echo "================================================="
-    echo "Installing packages $formulas on Mac OS"
+    echo "Installing packages $package_to_install on Mac OS"
     echo "================================================="
     brew update
-    brew install $formulas
+    brew install $package_to_install
  else
-    echo "OS NOT DETECTED, couldn't install package $formulas"
+    echo "OS NOT DETECTED, couldn't install package $package_to_install"
     exit 1;
  fi
 
@@ -105,3 +104,13 @@ fi
 # Source: https://github.com/VundleVim/Vundle.vim/issues/511
 echo "Installing Vundle plugins"
 echo | echo | vim +PluginInstall +qall &>/dev/null
+
+echo "================================================="
+echo "Font & color for vim"
+echo "================================================="
+
+# fonts
+wget https://github.com/powerline/fonts/blob/master/Inconsolata/Inconsolata%20for%20Powerline.otf?raw=true
+wget https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf?raw=true
+mkdir -p ~/.fonts && mv DejaVu%20Sans%20Mono%20for%20Powerline.ttf ~/.fonts/ && mv Inconsolata%20for%20Powerline.otf ~/.fonts/
+fc-cache -vf ~/.fonts/
