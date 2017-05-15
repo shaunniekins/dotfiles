@@ -1,6 +1,7 @@
 #!/bin/sh
 # Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
+
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
@@ -75,14 +76,13 @@ echo "================================================="
 echo "Symlink zsh theme, tmux.conf, vimrc, zshrc"
 echo "================================================="
 
- DOTFILES=$HOME/.ide_config
+DOTFILES=$HOME/.ide_config
 
- echo "Symlinking dotfiles"
- ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink ~/.oh-my-zsh/themes/spaceship.zsh-theme
- ln -s $DOTFILES/tmux/tmux.conf.symlink ~/.tmux.conf
- ln -s $DOTFILES/vim/vimrc.symlink ~/.vimrc
- ln -s $DOTFILES/zsh/zshrc.symlink ~/.zshrc
-
+echo "Symlinking dotfiles"
+ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink ~/.oh-my-zsh/themes/spaceship.zsh-theme
+ln -s $DOTFILES/tmux/tmux.conf.symlink ~/.tmux.conf
+ln -s $DOTFILES/vim/vimrc.symlink ~/.vimrc
+ln -s -f $DOTFILES/zsh/zshrc.symlink ~/.zshrc
 
 echo "================================================="
 echo "Installing packages vundle and activate plugins"
@@ -112,5 +112,10 @@ echo "================================================="
 # fonts
 wget https://github.com/powerline/fonts/blob/master/Inconsolata/Inconsolata%20for%20Powerline.otf
 wget https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf
-mkdir -p ~/.fonts && mv DejaVuSans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv Inconsolata\ for\ Powerline.otf ~/.fonts/
+mkdir -p ~/.fonts && mv DejaVu\ Sans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv Inconsolata\ for\ Powerline.otf ~/.fonts/
+## for centos/ubuntu/ mac ?!
 fc-cache -vf ~/.fonts/
+
+# Colors
+wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
+mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
