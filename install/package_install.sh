@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+DOTFILES=$HOME/.ide_config
+
 ## Script to install tmux,zsh,oh-my-zsh
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
@@ -67,3 +70,10 @@ echo "=============================="
 
 # Install Oh-My-Zsh
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+
+
+echo "Symlinking dotfiles"
+ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink ~/.oh-my-zsh/themes/spaceship.zsh-theme
+ln -s $DOTFILES/tmux.conf.symlink ~/.tmux.conf
+ln -s $DOTFILES/vimrc.symlink ~/.vimrc
+ln -s $DOTFILES/zshrc.symlink ~/.zshrc
