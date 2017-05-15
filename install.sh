@@ -8,6 +8,11 @@ echo "Installing packages"
 
 source install/package_install.sh
 
+
+echo "installing Oh-my-zsh"
+
+source install/ohmyzsh.sh
+
 echo "Initializing dotfiles."
 
 source install/symlink.sh
