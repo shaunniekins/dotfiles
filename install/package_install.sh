@@ -4,7 +4,7 @@
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
 
-formulas="git
+formulas="vim
     tmux
     tree
     wget
