@@ -110,7 +110,7 @@ echo "Font & color for vim"
 echo "================================================="
 
 # fonts
-wget https://github.com/powerline/fonts/blob/master/Inconsolata/Inconsolata%20for%20Powerline.otf?raw=true
-wget https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf?raw=true
-mkdir -p ~/.fonts && mv DejaVu%20Sans%20Mono%20for%20Powerline.ttf ~/.fonts/ && mv Inconsolata%20for%20Powerline.otf ~/.fonts/
+wget https://github.com/powerline/fonts/blob/master/Inconsolata/Inconsolata%20for%20Powerline.otf
+wget https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf
+mkdir -p ~/.fonts && mv DejaVuSans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv Inconsolata\ for\ Powerline.otf ~/.fonts/
 fc-cache -vf ~/.fonts/
