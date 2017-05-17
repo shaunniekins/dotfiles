@@ -80,7 +80,7 @@ DOTFILES=$HOME/.ide_config
 
 echo "Symlinking dotfiles"
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink ~/.oh-my-zsh/themes/spaceship.zsh-theme
-ln -s $DOTFILES/tmux/tmux.conf.symlink ~/.tmux.conf
+#ln -s $DOTFILES/tmux/tmux.conf.symlink ~/.tmux.conf
 ln -s $DOTFILES/vim/vimrc.symlink ~/.vimrc
 ln -s -f $DOTFILES/zsh/zshrc.symlink ~/.zshrc
 
