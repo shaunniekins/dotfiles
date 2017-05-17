@@ -11,6 +11,7 @@ package_to_install="vim
     tree
     wget
     zsh
+    curl
 "
  if cat /etc/*release | grep ^NAME | grep CentOS; then
     echo "==============================================="
