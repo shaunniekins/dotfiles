@@ -67,10 +67,7 @@ echo "================================================="
 echo "Installing packages Oh-my-zsh"
 echo "================================================="
 # Installing oh-my-zsh within a script. Source: https://github.com/robbyrussell/oh-my-zsh/issues/5873
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)" -s --batch || {
-    echo "Could not install Oh My Zsh" >/dev/stderr
-    exit 1
-}
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)" -s --batch
 
 
 echo "================================================="
