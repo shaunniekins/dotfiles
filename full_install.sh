@@ -79,10 +79,9 @@ echo "================================================="
 DOTFILES=$HOME/.ide_config
 
 echo "Symlinking dotfiles"
-ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink ~/.oh-my-zsh/themes/spaceship.zsh-theme
-#ln -s $DOTFILES/tmux/tmux.conf.symlink ~/.tmux.conf
-ln -s $DOTFILES/vim/vimrc.symlink ~/.vimrc
-ln -s -f $DOTFILES/zsh/zshrc.symlink ~/.zshrc
+ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
+ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
+ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 
 echo "================================================="
 echo "Installing packages vundle and activate plugins"
@@ -117,6 +116,8 @@ mkdir -p ~/.fonts && mv DejaVu\ Sans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv I
 fc-cache -vf ~/.fonts/
 
 # Colors
-export TERM=xterm-256color
 wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
 mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
+export TERM=xterm-256color
+ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
+
