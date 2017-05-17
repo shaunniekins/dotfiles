@@ -117,5 +117,6 @@ mkdir -p ~/.fonts && mv DejaVu\ Sans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv I
 fc-cache -vf ~/.fonts/
 
 # Colors
+export TERM=xterm-256color
 wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
 mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
