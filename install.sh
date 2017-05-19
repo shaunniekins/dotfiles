@@ -1,7 +1,6 @@
 #!/bin/sh
 # Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
-
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
@@ -80,6 +79,8 @@ echo "Symlinking dotfiles"
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
 ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
 ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
+ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
+
 
 echo "================================================="
 echo "Installing packages vundle and activate plugins"
@@ -117,5 +118,3 @@ fc-cache -vf ~/.fonts/
 wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
 mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
 # ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
-
-#cp $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
