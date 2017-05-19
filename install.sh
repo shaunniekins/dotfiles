@@ -1,6 +1,27 @@
 #!/bin/sh
 # Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
+DOTFILES=$HOME/.ide_config
+
+
+
+echo "=============================="
+echo -e "\n\nBackup existing config ..."
+echo "=============================="
+
+linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
+
+for file in $linkables; do
+    filename=".$( basename $file '.symlink' )"
+    target="$HOME/$filename"
+    if [ -f $target ]; then
+        echo "backing up $filename"
+        cp $target $BACKUP_DIR
+    else
+        echo -e "$filename does not exist at this location or is a symlink"
+    fi
+done
+
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
@@ -73,7 +94,6 @@ echo "================================================="
 echo "Symlink zsh theme, tmux.conf, vimrc, zshrc"
 echo "================================================="
 
-DOTFILES=$HOME/.ide_config
 
 echo "Symlinking dotfiles"
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
