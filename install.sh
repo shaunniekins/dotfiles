@@ -139,4 +139,3 @@ fc-cache -vf ~/.fonts/
 # Colors
 wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
 mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
-# ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
