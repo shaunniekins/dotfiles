@@ -2,14 +2,16 @@
 # Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
 DOTFILES=$HOME/.ide_config
-
-
+BACKUP_DIR=$HOME/dotfiles-backup
 
 echo "=============================="
 echo -e "\n\nBackup existing config ..."
 echo "=============================="
+echo "Creating backup directory at $BACKUP_DIR"
+mkdir -p $BACKUP_DIR
 
 linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
+files=("$HOME/.tmux.conf" "$HOME/.zshrc" "$HOME/.vimrc" "$HOME/.oh-my-zsh/themes/spaceship.zsh-theme")
 
 for file in $linkables; do
     filename=".$( basename $file '.symlink' )"

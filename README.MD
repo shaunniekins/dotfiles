@@ -5,8 +5,9 @@
 ### Prerequisite
 The install script backup the existing configuration file, but read below before running it ! 
 Requirements : 
-* Git
-* Tested on MacOs/Ubuntu/Debian/Centos
+* git
+* brew (on MacOs)
+** tested on MacOs/Ubuntu/Debian/Centos
 
 ### Install
 ```
@@ -23,6 +24,10 @@ The install script does the following  :
 * Install vim plugins
 * Symlink tmux.conf, .zshrc, .vimrc, and a theme of oh-my-zsh (spaceship)
 
+## TO do  
+* test backup files
+* add zc shortcut (vim package to compress code part)
+* add shortcuts
 
 
 
