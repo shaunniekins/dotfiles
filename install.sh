@@ -11,7 +11,6 @@ echo "Creating backup directory at $BACKUP_DIR"
 mkdir -p $BACKUP_DIR
 
 linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
-files=("$HOME/.tmux.conf" "$HOME/.zshrc" "$HOME/.vimrc" "$HOME/.oh-my-zsh/themes/spaceship.zsh-theme")
 
 for file in $linkables; do
     filename=".$( basename $file '.symlink' )"
