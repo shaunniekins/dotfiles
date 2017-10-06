@@ -24,10 +24,10 @@ Plugin 'fholgado/minibufexpl.vim' " buffer explorer
 Plugin 'jcfaria/vim-r-plugin'
 Plugin 'tcarette/vim-sparkshell'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'ensime/ensime-vim' " ensime to be installed
 Plugin 'majutsushi/tagbar'
 Plugin 'myusuf3/numbers.vim'
 Plugin 'ivanov/vim-ipython'
+"Plugin 'ensime/ensime-vim' " ensime to be installed
 "Plugin 'davidhalter/jedi-vim' " overwrite shortcut ?
 Plugin 'godlygeek/tabular'
 " Collapsse //}}}???
