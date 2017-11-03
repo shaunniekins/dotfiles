@@ -119,6 +119,9 @@ else
     echo "Vundle already installed"
 fi
 
+#default bash is zsh
+chsh -s /bin/zsh
+
 # This hack removes the Vim UI output
 # Source: https://github.com/VundleVim/Vundle.vim/issues/511
 echo "Installing Vundle plugins"
