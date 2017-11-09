@@ -27,12 +27,9 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'majutsushi/tagbar'
 Plugin 'myusuf3/numbers.vim'
 Plugin 'ivanov/vim-ipython'
-"Plugin 'ensime/ensime-vim' " ensime to be installed
-"Plugin 'davidhalter/jedi-vim' " overwrite shortcut ?
 Plugin 'scrooloose/syntastic'
 
 Plugin 'godlygeek/tabular'
-" Collapsse //}}}???
 Plugin 'luochen1990/rainbow'
 " colorschemes
 Plugin 'chriskempson/base16-vim'
@@ -304,6 +301,8 @@ let g:miniBufExplModSelTarget = 1
 let g:rainbow_active = 1
 
 " Spark-shell
+let g:inTmux = 1
+
 autocmd filetype scala,python noremap ,ss :call StartSparkShell(g:sparkOptions)<CR>
 autocmd filetype scala,python noremap ,sk :call StopSparkShell()<CR>
 autocmd filetype scala,python noremap ,sa :1,$ call SparkShellSendMultiLine()<CR>
