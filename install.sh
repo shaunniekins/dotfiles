@@ -97,6 +97,8 @@ echo "================================================="
 
 
 echo "Symlinking dotfiles"
+#Remove default theme candy
+rm -rf $HOME/.oh-my-zsh/themes/candy.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/themes/candy.zsh-theme
 ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
