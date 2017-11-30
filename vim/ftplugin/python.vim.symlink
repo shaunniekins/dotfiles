@@ -1,0 +1,2 @@
+let g:pysparkMode    = 1
+let g:sparkShellPath = system('echo $(command -v pyspark || echo "/usr/local/spark-2.1/bin/pyspark ") | tr "\n" " "')

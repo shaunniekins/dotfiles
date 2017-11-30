@@ -1,0 +1,3 @@
+let g:pysparkMode    = 0
+let g:jarDir         = $HOME."/lib/"
+let g:sparkShellPath = system('echo $(command -v spark-shell || echo "/usr/local/spark-2.1/bin/spark-shell ") | tr "\n" " "')
