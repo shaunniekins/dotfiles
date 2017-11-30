@@ -104,6 +104,9 @@ ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/th
 ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
 ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
+mkdir $HOME/.vim/ftplugin
+ln -s $DOTFILES/vim/ftplugin/python.vim.symlink $HOME/.vim/ftplugin/python.vim
+ln -s $DOTFILES/vim/ftplugin/scala.vim.symlink $HOME/.vim/ftplugin/scala.vim
 
 
 echo "================================================="

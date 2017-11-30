@@ -7,6 +7,7 @@ The install script backup the existing configuration file, but read below before
 Requirements : 
 * git
 * brew (on MacOs)
+* zsh 5.0.5 minum (otherwise space-ship theme will not recognize some colors)
 ** tested on MacOs/Ubuntu/Debian/Centos
 
 ### Install
@@ -15,6 +16,7 @@ git clone https://github.com/mehd-io/ide_config ~/.ide_config
 cd ~/.ide_config
 ./install.sh
 ```
+Update the spark-shell path in ide_config/vim/ftplugin/python.vim.symlink & ide_config/vim/ftplugin/scala.vim.symlink
 
 ### Terminal configuration : color & fonts
 * Fonts used "DejaVu Sans Mono for Powerline.ttf" and  "Inconsolata for Powerline.otf" are in terminal/fonts folder

@@ -301,6 +301,7 @@ let g:miniBufExplModSelTarget = 1
 let g:rainbow_active = 1
 
 " Spark-shell
+let g:sparkOptions = ""
 let g:inTmux = 1
 
 autocmd filetype scala,python noremap ,ss :call StartSparkShell(g:sparkOptions)<CR>
