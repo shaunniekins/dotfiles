@@ -300,9 +300,10 @@ let g:miniBufExplModSelTarget = 1
 " Rainbow
 let g:rainbow_active = 1
 
-" Spark-shell
+" Spark-shelll
 let g:sparkOptions = ""
 let g:inTmux = 1
+let g:sparkVersion = "1.6.2"
 
 autocmd filetype scala,python noremap ,ss :call StartSparkShell(g:sparkOptions)<CR>
 autocmd filetype scala,python noremap ,sk :call StopSparkShell()<CR>
