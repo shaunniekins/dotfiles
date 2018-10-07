@@ -34,7 +34,8 @@ The install script does the following  :
 Spaceship is a highly flexible theme of oh my zsh, for more info : https://github.com/denysdovhan/spaceship-zsh-theme
 
 ## Tmux
-command key remapped from ctrl+b to ctrl+space
+command key remapped from ctrl+b to ctrl+a
+Using theme from : https://github.com/gpakosz/.tmux
 
 ## To do
 * add screenshots
