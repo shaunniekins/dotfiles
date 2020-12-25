@@ -103,6 +103,7 @@ ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zs
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/themes/candy.zsh-theme
 ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
 ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
+ln -s -f $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 ln -s $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 mkdir $HOME/.vim/ftplugin
