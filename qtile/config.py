@@ -172,7 +172,9 @@ colors = [["#800080", "#800080"],   #purple
           ["#0047ab", "#0047ab"],   #cobalt blue
           ["#000000", "#000000"],   #black
           ["#ffffff", "#ffffff"],   #white
-          ["#404040", "#404040"],]  #gray
+          ["#404040", "#404040"],   #gray
+          ["#ff0000", "#ff0000"],   #red
+]
 
 layouts = [
     layout.Columns(
@@ -197,9 +199,9 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font='Ubuntu',
-    fontsize=12,
-    padding=3,
+    font='Hurmit Nerd Font Mono',
+    fontsize=13,
+    padding=1,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -219,9 +221,7 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Systray(
-                    icon_size = 15,
-                ),
+                widget.Systray(),
                 widget.Notify(),
                 widget.Sep(
                     padding=15,
@@ -240,7 +240,6 @@ screens = [
                         update_interval=2,
                         mouse_callbacks = {
                             "Button3": lambda: qtile.cmd_spawn(terminal + ' -e "nmcli dev wifi"'), 
-                            #"Button3": lambda: qtile.cmd_spawn(terminal + ' -e vtop'),
                             #"Button1": lambda: qtile.cmd_spawn(wifi_list)
                         },
                         # mouse_callbacks = {"Button3":lazy.spawn(wifi_list)},
@@ -276,7 +275,7 @@ screens = [
                     padding=15,
                 ),
                 widget.Clock(
-                    format='%D - %H:%M',
+                    format='%a %d %b - %H:%M',
                 ),
                 widget.Sep(
                     padding=15,
