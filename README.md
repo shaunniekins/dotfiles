@@ -10,7 +10,7 @@
 | office  | onlyoffice  |
 | file manager  | thunar  |
 | top | vtop |
-| notifications  | dunst  |
+| notifications  | --  |
 | code editor  | Vscodium  |
 | browser | brave |
 | icons  | inverse-blue-dark  |
@@ -19,3 +19,6 @@
 | screenshot  | xfce4-screenshooter  |
 | info app  | neofetch  |
 | background setter | nitrogen |
+| login manager | lightdm |
+| greeter | lightdm-greeter |
+| compositor | picom |
