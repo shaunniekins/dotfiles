@@ -7,6 +7,7 @@
 | window manger  | Qtile  |
 | launcher  | dmenu  |
 | terminal  | xfce4-terminal  |
+| network manager  | networkmanager-dmenu  |
 | office  | onlyoffice  |
 | file manager  | thunar  |
 | top | vtop |
