@@ -11,7 +11,7 @@
 | office  | onlyoffice  |
 | file manager  | thunar  |
 | top | vtop |
-| notifications  | --  |
+| notifications  | dunst  |
 | code editor  | Vscodium  |
 | browser | brave |
 | icons  | inverse-blue-dark  |
