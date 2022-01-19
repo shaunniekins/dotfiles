@@ -16,10 +16,13 @@
 | browser | brave |
 | icons  | inverse-blue-dark  |
 | theme  | orchis-theme-git  |
-| themings | lxappearance |
+| theme switcher | lxappearance |
 | screenshot  | xfce4-screenshooter  |
 | info app  | neofetch  |
 | background setter | nitrogen |
 | login manager | lightdm |
 | greeter | lightdm-greeter |
 | compositor | picom |
+| cursor | capitaine-cursors |
+
+packages for thunar: file-roller, thunar-archive-plugin
