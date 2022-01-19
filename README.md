@@ -9,7 +9,7 @@
 | terminal  | xfce4-terminal  |
 | network manager  | networkmanager-dmenu  |
 | office  | onlyoffice  |
-| file manager  | thunar  |
+| file manager  | nemo  |
 | top | vtop |
 | notifications  | dunst  |
 | code editor  | Vscodium  |
@@ -25,4 +25,4 @@
 | compositor | picom |
 | cursor | capitaine-cursors |
 
-packages for thunar: file-roller, thunar-archive-plugin
+packages for nemo: nemo-file-roller
