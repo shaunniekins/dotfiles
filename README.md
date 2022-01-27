@@ -17,7 +17,7 @@
 | icons  | inverse-blue-dark  |
 | theme  | orchis-theme-git  |
 | theme switcher | lxappearance |
-| screenshot  | xfce4-screenshooter  |
+| screenshot  | flameshot  |
 | info app  | neofetch  |
 | background setter | nitrogen |
 | login manager | lightdm |
@@ -25,6 +25,12 @@
 | compositor | picom |
 | cursor | capitaine-cursors |
 | file-transwer | lanxchange |
-| others | genymotion, wine, klavaro, obs-studio, gimp, davinci-resolve, timeshift |
+| others | genymotion, 
+wine, 
+klavaro, 
+obs-studio, 
+gimp, 
+davinci-resolve, 
+timeshift |
 
 packages for nemo: nemo-file-roller
