@@ -46,11 +46,12 @@ terminal = "xfce4-terminal"
 browser = "brave"
 office = "onlyoffice-desktopeditors"
 code = "vscodium"
-file_manager = "thunar"
+file_manager = "nemo"
 screenshot = "xfce4-screenshooter"
 full_screenshot = "xfce4-screenshooter -f -s /home/shaun/Pictures/"
 window_screenshot = "xfce4-screenshooter -w -s /home/shaun/Pictures/"
 network = "networkmanager_dmenu -nb '#000000' -nf '#ffffff' -sb '#0047ab' -sf '#ffffff'"
+power_off = terminal + ' -e "shutdown -h now"'
 
 keys = [
     # Switch between windows
@@ -151,9 +152,12 @@ keys = [
     Key([mod, "shift"], "r", 
         lazy.spawn(window_screenshot),
         desc="Active-Window Screenshot"),
-     Key([mod, "shift"], "n", 
+    Key([mod, "shift"], "n", 
         lazy.spawn(network),
         desc="Run Network Manager Dmenu"),
+    Key([mod, "shift"], "y", 
+        lazy.spawn(power_off),
+        desc="Power Off Computer"),
 
 ]
 
@@ -189,21 +193,12 @@ layouts = [
         margin=0,
         margin_on_single=0),
     layout.Max(),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
 ]
 
 widget_defaults = dict(
-    font='Hurmit Nerd Font Mono',
+    font = 'Computer Modern',
+    #font = 'URW Gothic',
+    #font='Hurmit Nerd Font Mono',
     fontsize=11,
     padding=1,
 )
@@ -224,48 +219,39 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Systray(),
+                widget.Systray(
+                    icon_size = 14,
+                ),
                 widget.Notify(),
                 widget.Sep(
                     padding=15,
                 ),
-                widget.WidgetBox(widgets=[
-                    widget.Sep(
-                        padding=15,
-                    ),
-                    widget.Wlan( 
-                        update_interval=2,
-                        mouse_callbacks = {
-                            "Button1": lambda: qtile.cmd_spawn(network),
-                        },
-                        format = 'WiFi: {essid} - {percent:2.0%}',
-                    ),
-                    widget.Sep(
-                        padding=15,
-                    ),
-                    widget.TextBox(
-                        fmt = 'Battery:',
-                    ),
-                    widget.Battery(
-                        charge_char='↑',
-                        discharge_char='',
-                        update_interval=1,
-                        format='{char} {percent:2.0%}',
-                        unknown_char = '?',
-                    ),
-                    widget.Sep(
-                        padding=15,
-                    ),
-                    widget.TextBox(
-                        fmt = 'Volume:',
-                        mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
-                    ),
-                    widget.Volume(
-                        mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
-                    ),
-                    ],
-                    text_closed = '✖',
-                    text_open = '✖ ',
+                widget.Wlan( 
+                    update_interval=5,
+                    mouse_callbacks = {
+                        "Button1": lambda: qtile.cmd_spawn(network),
+                    },
+                    format = 'Wifi: {essid} - {percent:2.0%}',
+                ),
+                widget.Sep(
+                    padding=15,
+                ),
+                widget.Battery(
+                    charge_char='↑',
+                    discharge_char='',
+                    update_interval=1,
+                    format='Battery: {char} {percent:2.0%}',
+                    unknown_char = '?',
+                ),
+                widget.Sep(
+                    padding=15,
+                ),
+                widget.TextBox(
+                    fmt = 'Volume:',
+                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
+                ),
+                widget.Volume(
+                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
                 ),
                 widget.Sep(
                     padding=15,
@@ -274,21 +260,12 @@ screens = [
                     format='%a %d %b - %H:%M',
                 ),
                 widget.Sep(
-                    padding=15,
-                ),
-                widget.TextBox(
-                    fmt = 'OFF',
-                    mouse_callbacks = {'Button3': lambda: qtile.cmd_spawn(terminal + ' -e "shutdown -h now"'),}
-                ),
-                widget.Sep(
                     linewidth = 0,
-                    padding=5,
+                    padding=10,
                 ),
             ],
             15,
             background = colors[2],
-            # border_width=[1, 0, 1, 0],  # Draw top and bottom borders
-            # border_color=["0000ff", "000000", "0000ff", "000000"]  # Borders are magenta
         ),
     ),
 ]
