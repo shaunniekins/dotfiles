@@ -25,12 +25,6 @@
 | compositor | picom |
 | cursor | capitaine-cursors |
 | file-transwer | lanxchange |
-| others | genymotion, 
-wine, 
-klavaro, 
-obs-studio, 
-gimp, 
-davinci-resolve, 
-timeshift |
+| others | genymotion, wine, klavaro, obs-studio, gimp, davinci-resolve, timeshift |
 
 packages for nemo: nemo-file-roller
