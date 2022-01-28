@@ -24,8 +24,9 @@
 | greeter | lightdm-greeter |
 | compositor | picom |
 | cursor | capitaine-cursors |
-| file-transwer | lanxchange |
+| file-transfer | lanxchange |
 | brightness control tool | brightnessctl |
+| sound control | alsa-utils |
 | others | genymotion, wine, klavaro, obs-studio, gimp, davinci-resolve, timeshift |
 
 packages for nemo: nemo-file-roller
