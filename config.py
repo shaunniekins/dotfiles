@@ -1,33 +1,7 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 from typing import List  # noqa: F401
 
 from libqtile import qtile
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -47,9 +21,7 @@ browser = "brave"
 office = "onlyoffice-desktopeditors"
 code = "vscodium"
 file_manager = "nemo"
-screenshot = "xfce4-screenshooter"
-full_screenshot = "xfce4-screenshooter -f -s /home/shaun/Pictures/"
-window_screenshot = "xfce4-screenshooter -w -s /home/shaun/Pictures/"
+screenshot = "flameshot gui"
 network = "networkmanager_dmenu -nb '#000000' -nf '#ffffff' -sb '#0047ab' -sf '#ffffff'"
 power_off = terminal + ' -e "shutdown -h now"'
 
@@ -146,25 +118,37 @@ keys = [
     Key([mod], "v", 
         lazy.spawn(code),
         desc="Run Vscodium"),
-    Key([mod, "shift"], "f", 
-        lazy.spawn(full_screenshot),
-        desc="Full-Screen Screenshot"),
-    Key([mod, "shift"], "r", 
-        lazy.spawn(window_screenshot),
-        desc="Active-Window Screenshot"),
     Key([mod, "shift"], "n", 
         lazy.spawn(network),
         desc="Run Network Manager Dmenu"),
     Key([mod, "shift"], "y", 
         lazy.spawn(power_off),
         desc="Power Off Computer"),
+    Key([mod, "shift"], "f",
+        lazy.spawn(screenshot),
+        desc="Run Flameshot"),
+    Key([], "F5", 
+        lazy.spawn("brightnessctl s +5%"),
+        desc="Brightness Up"),
+    Key([], "F6",
+        lazy.spawn("brightnessctl s 5%-"),
+        desc="Brightness Down"),
+    Key([], "F2",
+        lazy.spawn("amixer -q set Master 10%+"),
+        desc="Volume Up"),
+    Key([], "F3",
+        lazy.spawn("amixer -q set Master 10%-"),
+        desc="Volume Down"),
+    Key([], "F4",
+        lazy.spawn("amixer -q set Master toggle"),
+        desc="Volume Mute"),
 
 ]
 
 groups = [
     Group("1", spawn = browser),
     Group("2",),
-    Group("3",),
+    Group("3"),
     ]
 
 for i in groups:
@@ -240,14 +224,14 @@ screens = [
                     charge_char='↑',
                     discharge_char='',
                     update_interval=1,
-                    format='Battery: {char} {percent:2.0%}',
+                    format='Batt: {char} {percent:2.0%}',
                     unknown_char = '?',
                 ),
                 widget.Sep(
                     padding=15,
                 ),
                 widget.TextBox(
-                    fmt = 'Volume:',
+                    fmt = 'Vol:',
                     mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
                 ),
                 widget.Volume(
@@ -302,14 +286,17 @@ reconfigure_screens = True
 # focus, should we respect this or not?
 auto_minimize = True
 
+import os
+import subprocess, re
 
+@hook.subscribe.startup
+def autostart():
+    processes = [
+        ['flameshot'],
+        ['dunst'],
+    ]
 
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
+    for p in processes:
+        subprocess.Popen(p)
+
 wmname = "LG3D"
