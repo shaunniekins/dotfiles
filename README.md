@@ -5,7 +5,7 @@
 | ------------- | ------------- |
 | OS  | ArchLinux  |
 | window manger  | Qtile  |
-| launcher  | dmenu  |
+| launcher  | dmenu-extended  |
 | terminal  | xfce4-terminal  |
 | network manager  | networkmanager-dmenu  |
 | office  | onlyoffice  |
