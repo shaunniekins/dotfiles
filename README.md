@@ -35,6 +35,7 @@ My setup is pretty simple and functional.
 | top | vtop |
 | typing-tutor | klavaro |
 | video editor  | davinci-resolve  |
+
 | Settings | Name |
 | ------------- | ------------- |
 | brightness control tool | brightnessctl |
