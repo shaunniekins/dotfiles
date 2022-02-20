@@ -8,7 +8,6 @@ My setup is pretty simple and functional.
 | OS  | ArchLinux  |
 | ------------- | ------------- |
 | window manger  | Qtile  |
-
 | Applications | Name |
 | ------------- | ------------- |
 | background setter | nitrogen |
@@ -35,7 +34,6 @@ My setup is pretty simple and functional.
 | top | vtop |
 | typing-tutor | klavaro |
 | video editor  | davinci-resolve  |
-
 | Settings | Name |
 | ------------- | ------------- |
 | brightness control tool | brightnessctl |
