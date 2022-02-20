@@ -1,32 +1,47 @@
-# README
+#READ
+
+My setup is pretty simple and functional. 
 
 
-| Categories | Name |
-| ------------- | ------------- |
+## myLinux
+
+
 | OS  | ArchLinux  |
 | window manger  | Qtile  |
-| launcher  | dmenu-extended  |
-| terminal  | xfce4-terminal  |
-| network manager  | networkmanager-dmenu  |
-| office  | onlyoffice  |
-| file manager  | nemo  |
-| top | vtop |
-| notifications  | dunst  |
-| code editor  | Vscodium  |
+
+| Applications | Name |
+| ------------- | ------------- |
+| background setter | nitrogen |
 | browser | brave |
+| code editor  | Vscodium  |
+| compatibility layer | wine |
+| compositor | picom |
+| file manager  | nemo  |
+| file-transfer | lanxchange |
+| greeter | lightdm-greeter |
 | icons  | inverse-blue-dark  |
+| image editor  | gimp  |
+| info app  | neofetch  |
+| launcher  | dmenu-extended  |
+| login manager | lightdm |
+| mobile emulator | genymotion |
+| notifications  | dunst  |
+| office  | onlyoffice  |
+| screencasting | obs-studio |
+| screenshot  | flameshot  |
+| terminal  | xfce4-terminal  |
 | theme  | orchis-theme-git  |
 | theme switcher | lxappearance |
-| screenshot  | flameshot  |
-| info app  | neofetch  |
-| background setter | nitrogen |
-| login manager | lightdm |
-| greeter | lightdm-greeter |
-| compositor | picom |
-| cursor | capitaine-cursors |
-| file-transfer | lanxchange |
-| brightness control tool | brightnessctl |
-| sound control | alsa-utils |
-| others | genymotion, wine, klavaro, obs-studio, gimp, davinci-resolve, timeshift |
+| top | vtop |
+| typing-tutor | klavaro |
+| video editor  | davinci-resolve  |
 
-packages for nemo: nemo-file-roller
+| Settings | Name |
+| ------------- | ------------- |
+| brightness control tool | brightnessctl |
+| network manager  | networkmanager-dmenu  |
+| sound control | alsa-utils |
+
+| Others |
+| ------------- | ------------- |
+nemo-file-roller
