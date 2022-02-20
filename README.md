@@ -8,6 +8,7 @@ My setup is pretty simple and functional.
 | OS  | ArchLinux  |
 | ------------- | ------------- |
 | window manger  | Qtile  |
+
 | Applications | Name |
 | ------------- | ------------- |
 | background setter | nitrogen |
