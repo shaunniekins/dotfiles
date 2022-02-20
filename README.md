@@ -1,4 +1,4 @@
-#READ
+# READ
 
 My setup is pretty simple and functional. 
 
@@ -43,5 +43,5 @@ My setup is pretty simple and functional.
 | sound control | alsa-utils |
 
 | Others |
-| ------------- | ------------- |
+| ------------- |
 nemo-file-roller
