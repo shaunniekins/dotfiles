@@ -18,8 +18,6 @@ colors = [["#800080", "#800080"],   #purple
 mod = "mod4"
 terminal = "xfce4-terminal"
 browser = "brave"
-office = "onlyoffice-desktopeditors"
-code = "vscodium"
 file_manager = "nemo"
 screenshot = "flameshot gui"
 network = "networkmanager_dmenu -nb '#000000' -nf '#ffffff' -sb '#0047ab' -sf '#ffffff'"
@@ -104,20 +102,15 @@ keys = [
     
     # Personal
     Key([mod], "d", 
-        lazy.spawn("dmenu_run -nb '#000000' -nf '#ffffff' -sb '#800080' -sf '#ffffff'"), 
+        lazy.spawn("dmenu_extended_run"),
+        #lazy.spawn("dmenu_run -nb '#000000' -nf '#ffffff' -sb '#800080' -sf '#ffffff'"), 
         desc="Run Dmenu"),
     Key([mod], "b", 
         lazy.spawn(browser), 
         desc="Run Browser"),
-    Key([mod], "o", 
-        lazy.spawn(office), 
-        desc="Run Office"),
     Key([mod], "m", 
         lazy.spawn(file_manager), 
         desc="Run File Manager"),
-    Key([mod], "v", 
-        lazy.spawn(code),
-        desc="Run Vscodium"),
     Key([mod, "shift"], "n", 
         lazy.spawn(network),
         desc="Run Network Manager Dmenu"),
@@ -149,6 +142,8 @@ groups = [
     Group("1", spawn = browser),
     Group("2",),
     Group("3"),
+    Group("4"),
+    Group("5"),
     ]
 
 for i in groups:
@@ -180,10 +175,11 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font = 'Computer Modern',
+    font = 'Fira Code Nerd Font',
+    #font = 'Computer Modern',
     #font = 'URW Gothic',
     #font='Hurmit Nerd Font Mono',
-    fontsize=11,
+    fontsize=10,
     padding=1,
 )
 extension_defaults = widget_defaults.copy()
@@ -248,7 +244,7 @@ screens = [
                     padding=10,
                 ),
             ],
-            15,
+            20,
             background = colors[2],
         ),
     ),
