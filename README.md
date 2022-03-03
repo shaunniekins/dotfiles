@@ -5,7 +5,7 @@ My setup is pretty simple and functional.
 
 ## myLinux
 
-| OS  | ArchLinux  |
+| OS  | EndeavourOS  |
 | ------------- | ------------- |
 | window manger  | Qtile  |
 
