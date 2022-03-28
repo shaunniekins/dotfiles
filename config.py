@@ -22,6 +22,8 @@ file_manager = "nemo"
 screenshot = "flameshot gui"
 network = "networkmanager_dmenu -nb '#000000' -nf '#ffffff' -sb '#0047ab' -sf '#ffffff'"
 power_off = terminal + ' -e "shutdown -h now"'
+run_xampp = terminal + 'cd /opt/lampp' + 'sudo ./manager-linux-x64.run'
+calendar = terminal + ' -e "cal -y"'
 
 keys = [
     # Switch between windows
@@ -135,6 +137,9 @@ keys = [
     Key([], "F4",
         lazy.spawn("amixer -q set Master toggle"),
         desc="Volume Mute"),
+    Key([mod, "shift"], "x",
+        lazy.spawn(run_xampp),
+        desc="Run Xampp"),
 
 ]
 
@@ -142,8 +147,6 @@ groups = [
     Group("1", spawn = browser),
     Group("2",),
     Group("3"),
-    Group("4"),
-    Group("5"),
     ]
 
 for i in groups:
@@ -168,8 +171,8 @@ layouts = [
         border_width=1,
         border_normal=colors[2],
         border_focus=colors[0],
-        fair=True,
         margin=0,
+        insert_positipn=1,
         margin_on_single=0),
     layout.Max(),
 ]
@@ -189,9 +192,29 @@ screens = [
         top=bar.Bar(
             [
                 widget.GroupBox(
-                    highlight_method = "line",
+                    borderwidth=0, 
+                    active=colors[3], 
+                    inactive=colors[2],
+                    highlight_method = "block",
+                    background=colors[0]
                 ),
-                widget.Prompt(),
+                widget.TextBox(
+                    "🭀", 
+                    fontsize=30, 
+                #    background=colors[1],
+                    foreground=colors[0], 
+                    padding=0
+                ),
+                widget.Prompt(
+                    prompt=' </> ', 
+                    background=colors[2],
+                ),
+                #widget.TextBox(
+                #    "🭀", 
+                #    fontsize=30,
+                #    foreground=colors[1],
+                #    padding=0
+                # ),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
@@ -199,48 +222,81 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Systray(
-                    icon_size = 14,
+                 widget.TextBox(
+                    "", 
+                    fontsize=40,
+                    foreground=colors[0], 
+                    padding=-5
                 ),
-                widget.Notify(),
-                widget.Sep(
-                    padding=15,
+                widget.Systray(
+                    background=colors[0],
+                    icon_size = 15,
+                    padding=10,
+                ),
+                widget.Notify(
+                    background=colors[0],
+                    padding=10,
+                ),
+                widget.TextBox(
+                    "", 
+                    fontsize=40, 
+                    background=colors[0], 
+                    foreground=colors[2], 
+                    padding=-5
                 ),
                 widget.Wlan( 
+                    background=colors[2],
                     update_interval=5,
                     mouse_callbacks = {
                         "Button1": lambda: qtile.cmd_spawn(network),
                     },
-                    format = 'Wifi: {essid} - {percent:2.0%}',
+                    format = 'Wlan: {percent:2.0%}',
+                    padding=10,
                 ),
-                widget.Sep(
-                    padding=15,
+                widget.TextBox(
+                    "", 
+                    fontsize=40, 
+                    background=colors[2], 
+                    foreground=colors[0], 
+                    padding=-5
                 ),
                 widget.Battery(
+                    background=colors[0],
                     charge_char='↑',
                     discharge_char='',
                     update_interval=1,
                     format='Batt: {char} {percent:2.0%}',
                     unknown_char = '?',
-                ),
-                widget.Sep(
-                    padding=15,
+                    padding=10,
                 ),
                 widget.TextBox(
-                    fmt = 'Vol:',
-                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
+                    "", 
+                    fontsize=40, 
+                    background=colors[0], 
+                    foreground=colors[2], 
+                    padding=-5
                 ),
                 widget.Volume(
-                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn("pavucontrol")},
+                    background=colors[2],
+                    fmt='Vol: {}',
+                    mouse_callbacks={
+                        'Button3': lambda: qtile.cmd_spawn("pavucontrol")
+                    },
+                    padding=10,
                 ),
-                widget.Sep(
-                    padding=15,
+                widget.TextBox(
+                    "", 
+                    fontsize=40, 
+                    background=colors[2], 
+                    foreground=colors[0],
+                    padding=-5
                 ),
                 widget.Clock(
-                    format='%a %d %b - %H:%M',
-                ),
-                widget.Sep(
-                    linewidth = 0,
+                    background=colors[0],
+                    format='%H:%M %a %d %b ',
+                    mouse_callbacks={
+                        'Button3': lambda: qtile.cmd_spawn(calendar)
+                    },
                     padding=10,
                 ),
             ],
