@@ -231,7 +231,7 @@ screens = [
                 widget.Systray(
                     background=colors[0],
                     icon_size = 15,
-                    padding=10,
+                #    padding=10,
                 ),
                 widget.Notify(
                     background=colors[0],
@@ -347,7 +347,6 @@ def autostart():
         ['flameshot'],
         ['dunst'],
     ]
-
     for p in processes:
         subprocess.Popen(p)
 
