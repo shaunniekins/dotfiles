@@ -23,7 +23,7 @@
 | Typing Tutor		| [Klavaro](https://linuxmasterclub.com/klavaro/)		|
 | Notifications		| [Dunst](https://wiki.archlinux.org/title/Dunst)											|
 | Sound			| [Pulseaudio](https://wiki.archlinux.org/title/PulseAudio)		|
-| Network		| [Network manager](https://wiki.archlinux.org/title/NetworkManager), [Networkmanager Dmenu](https://aur.archlinux.org/packages/networkmanager-dmenu-git)									|
+| Network		| [Network manager](https://wiki.archlinux.org/title/NetworkManager), [Rofi-wifi-menu](https://github.com/ericmurphyxyz/rofi-wifi-menu)									|
 | Monitor resolution	| [Xrandr](https://wiki.archlinux.org/title/Xrandr)											|
 | Compositor		| [Picom](https://wiki.archlinux.org/title/Picom)											|
 | Bluetooth   | [Bluez](http://www.bluez.org/), [Blueman](https://github.com/blueman-project/blueman).    |
