@@ -104,9 +104,8 @@ keys = [
     
     # Personal
     Key([mod], "d", 
-        lazy.spawn("dmenu_extended_run"),
-        #lazy.spawn("dmenu_run -nb '#000000' -nf '#ffffff' -sb '#800080' -sf '#ffffff'"), 
-        desc="Run Dmenu"),
+        lazy.spawn("rofi -show drun"),
+        desc="Run Rofi"),
     Key([mod], "b", 
         lazy.spawn(browser), 
         desc="Run Browser"),
@@ -168,10 +167,10 @@ for i in groups:
 
 layouts = [
     layout.Columns(
-        border_width=1,
+        border_width=2,
         border_normal=colors[2],
         border_focus=colors[0],
-        margin=0,
+        margin=2,
         insert_positipn=1,
         margin_on_single=0),
     layout.Max(),
