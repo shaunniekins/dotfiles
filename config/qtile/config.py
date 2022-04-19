@@ -20,7 +20,7 @@ terminal = "xfce4-terminal"
 browser = "brave"
 file_manager = "nemo"
 screenshot = "flameshot gui"
-network = "networkmanager_dmenu -nb '#000000' -nf '#ffffff' -sb '#0047ab' -sf '#ffffff'"
+network = "bash \"./rofi-wifi-menu/rofi-wifi-menu.sh\""
 power_off = terminal + ' -e "shutdown -h now"'
 run_xampp = terminal + 'cd /opt/lampp' + 'sudo ./manager-linux-x64.run'
 calendar = terminal + ' -e "cal -y"'
@@ -114,7 +114,7 @@ keys = [
         desc="Run File Manager"),
     Key([mod, "shift"], "n", 
         lazy.spawn(network),
-        desc="Run Network Manager Dmenu"),
+        desc="Run Network Manager"),
     Key([mod, "shift"], "y", 
         lazy.spawn(power_off),
         desc="Power Off Computer"),
