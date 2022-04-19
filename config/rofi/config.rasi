@@ -1,0 +1,9 @@
+configuration {
+  modi: "window,run,drun";
+  display-drun: "APPS:  ";
+  display-window: "WIN:  ";
+  display-run: "RUN:  ";
+  drun-display-format: "{name}";
+}
+
+@theme "/dmenu.rasi"
