@@ -15,7 +15,7 @@
 | File Transfer	| [LanXchange](https://lanxchange.com/)											|
 | Info app	| [Neofetch](https://github.com/dylanaraps/neofetch)											|
 | Screencasting	| [OBS Studio](https://obsproject.com/download)											|
-| Launchers		| [Dmenu-extended](https://github.com/MarkHedleyJones/dmenu-extended)					|
+| Launchers		| [Rofi](https://github.com/MarkHedleyJones/dmenu-extended)					|
 | Screenshots		| [Flameshot](https://flameshot.org/)       |
 | Theme Switcher		| [Lxappearance](https://archlinux.org/packages/community/x86_64/lxappearance/)       |
 | Office	| [Onlyoffice](https://www.onlyoffice.com/en/desktop.aspx)											|
