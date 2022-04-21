@@ -16,6 +16,7 @@ colors = [["#800080", "#800080"],   #purple
 ]
 
 mod = "mod4"
+mod_alt = "mod1"
 terminal = "xfce4-terminal"
 browser = "brave"
 file_manager = "nemo"
@@ -139,6 +140,9 @@ keys = [
     Key([mod, "shift"], "x",
         lazy.spawn(run_xampp),
         desc="Run Xampp"),
+    Key([mod, "shift"], "l",
+         lazy.hide_show_bar(position='all'),
+        desc="Toggle bars"),
 
 ]
 
@@ -167,20 +171,16 @@ for i in groups:
 
 layouts = [
     layout.Columns(
-        border_width=2,
-        border_normal=colors[2],
         border_focus=colors[0],
-        margin=2,
-        insert_positipn=1,
-        margin_on_single=0),
+        border_normal=colors[2],
+        border_width=2,
+        num_columns=2,),
     layout.Max(),
 ]
 
 widget_defaults = dict(
-    font = 'Fira Code Nerd Font',
-    #font = 'Computer Modern',
-    #font = 'URW Gothic',
-    #font='Hurmit Nerd Font Mono',
+    #font = 'Fira Code Nerd Font',
+    font = 'Ubuntu',
     fontsize=10,
     padding=1,
 )
@@ -195,7 +195,8 @@ screens = [
                     active=colors[3], 
                     inactive=colors[2],
                     highlight_method = "block",
-                    background=colors[0]
+                    background=colors[0],
+                    padding=5,
                 ),
                 widget.TextBox(
                     "🭀", 
@@ -230,7 +231,7 @@ screens = [
                 widget.Systray(
                     background=colors[0],
                     icon_size = 15,
-                #    padding=10,
+                    padding=2,
                 ),
                 widget.Notify(
                     background=colors[0],
@@ -299,19 +300,20 @@ screens = [
                     padding=10,
                 ),
             ],
+            # bar
             20,
             background = colors[2],
         ),
     ),
 ]
 
-# Drag floating layouts.
+# Drag floating layoutRs.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
+    Drag([mod, "shift"], "Button1", lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
+    Drag([mod, "shift"], "Button3", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
+    Click([mod, "shift"], "Button2", lazy.window.bring_to_front())
 ]
 
 dgroups_key_binder = None
