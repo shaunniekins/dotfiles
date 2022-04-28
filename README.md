@@ -8,7 +8,7 @@
 | Display Manager		| [Ly](https://gist.github.com/miguelmota/f6a11cebd9bdb6bb2ad813e99c1262b9)								|
 | Terminal emulator	| [Xfce4 Terminal](https://archlinux.org/packages/extra/x86_64/xfce4-terminal/)										|
 | Browser	| [Brave](https://brave.com/)										|
-| File Manager	| [Lf](https://github.com/gokcehan/lf), [Nemo](https://wiki.archlinux.org/title/Nemo) w/ nemo-file-roller 										|
+| File Manager	| [PCManFM](https://wiki.archlinux.org/title/PCManFM)										|
 | IDE'S			| [VSCode](https://wiki.archlinux.org/title/Visual_Studio_Code), [Vim](https://wiki.archlinux.org/title/Vim)			|
 | Image viewer		| [Nomacs](https://nomacs.org/download/)												|
 | Background setter	| [Nitrogen](https://wiki.archlinux.org/title/Nitrogen)											|
