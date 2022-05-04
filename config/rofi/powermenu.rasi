@@ -1,0 +1,8 @@
+configuration {
+    font:                           "Cascadia Code 12";
+    show-icons:                     false;
+    scroll-method:                  0;
+    disable-history:                false;
+}
+
+@theme "~/.config/rofi/dmenu.rasi"

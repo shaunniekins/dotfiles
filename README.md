@@ -2,7 +2,7 @@
 
 |Program / Software		| Name																	|
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Distribution		| [EndeavourOs](https://endeavouros.com/)													|
+| Distribution		| [Arch Linux](https://archlinux.org/)													|
 | WM			| [Qtile](https://wiki.archlinux.org/title/Qtile)												|
 | Bar		| [Qtile](https://wiki.archlinux.org/title/Qtile)											|
 | Display Manager		| [Ly](https://gist.github.com/miguelmota/f6a11cebd9bdb6bb2ad813e99c1262b9)								|
@@ -10,7 +10,7 @@
 | Browser	| [Brave](https://brave.com/)										|
 | File Manager	| [PCManFM](https://wiki.archlinux.org/title/PCManFM)										|
 | IDE'S			| [VSCode](https://wiki.archlinux.org/title/Visual_Studio_Code), [Vim](https://wiki.archlinux.org/title/Vim)			|
-| Image viewer		| [Nomacs](https://nomacs.org/download/)												|
+| Image viewer		| [Nomacs](https://nomacs.org/download/)	`											|
 | Background setter	| [Nitrogen](https://wiki.archlinux.org/title/Nitrogen)											|
 | File Transfer	| [LanXchange](https://lanxchange.com/)											|
 | Info app	| [Neofetch](https://github.com/dylanaraps/neofetch)											|
@@ -28,6 +28,6 @@
 | Bluetooth   | [Bluez](http://www.bluez.org/), [Blueman](https://github.com/blueman-project/blueman).    |
 | GTK Themes		| [Orchis theme](https://aur.archlinux.org/packages/orchis-theme)										|
 | Icon Theme		| Inverse blue dark			|
-| Fonts | Fira Code Nerd Font, Ubuntu	|
+| Fonts | Ubuntu	|
 
 Note: My setup is pretty simple and functional. 

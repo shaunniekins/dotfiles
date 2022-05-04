@@ -4,34 +4,26 @@ from libqtile import qtile
 from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
-
-
-colors = [["#800080", "#800080"],   #purple
-          ["#0047ab", "#0047ab"],   #cobalt blue
-          ["#000000", "#000000"],   #black
-          ["#ffffff", "#ffffff"],   #white
-          ["#404040", "#404040"],   #gray
-          ["#ff0000", "#ff0000"],   #red
-]
 
 mod = "mod4"
 mod_alt = "mod1"
 terminal = "xfce4-terminal"
 browser = "brave"
-file_manager = "nemo"
+file_manager = "pcmanfm"
 screenshot = "flameshot gui"
-network = "bash \"./rofi-wifi-menu/rofi-wifi-menu.sh\""
 power_off = terminal + ' -e "shutdown -h now"'
 run_xampp = terminal + 'cd /opt/lampp' + 'sudo ./manager-linux-x64.run'
 calendar = terminal + ' -e "cal -y"'
+rofi_run = "rofi -show drun"
+rofi_network = "bash \"./rofi-wifi-menu/rofi-wifi-menu.sh\""
+rofi_power = os.path.expanduser('~/.config/rofi/powermenu.sh')
 
 keys = [
     # Switch between windows
-    Key([mod], "h", 
+    Key([mod], "h",
         lazy.layout.left(), 
         desc="Move focus to left"),
-    Key([mod], "l", 
+    Key([mod], "l",
         lazy.layout.right(), 
         desc="Move focus to right"),
     Key([mod], "j", 
@@ -96,7 +88,7 @@ keys = [
         lazy.window.kill(), 
         desc="Kill focused window"),
 
-    Key([mod, "control"], "r", 
+    Key([mod, "shift"], "r", 
         lazy.reload_config(), 
         desc="Reload the config"),
     Key([mod, "control"], "q", 
@@ -105,7 +97,7 @@ keys = [
     
     # Personal
     Key([mod], "d", 
-        lazy.spawn("rofi -show drun"),
+        lazy.spawn(rofi_run),
         desc="Run Rofi"),
     Key([mod], "b", 
         lazy.spawn(browser), 
@@ -114,7 +106,7 @@ keys = [
         lazy.spawn(file_manager), 
         desc="Run File Manager"),
     Key([mod, "shift"], "n", 
-        lazy.spawn(network),
+        lazy.spawn(rofi_network),
         desc="Run Network Manager"),
     Key([mod, "shift"], "y", 
         lazy.spawn(power_off),
@@ -140,8 +132,8 @@ keys = [
     Key([mod, "shift"], "x",
         lazy.spawn(run_xampp),
         desc="Run Xampp"),
-    Key([mod, "shift"], "l",
-         lazy.hide_show_bar(position='all'),
+    Key([mod, "shift"], "b",
+        lazy.hide_show_bar(position='all'),
         desc="Toggle bars"),
 
 ]
@@ -169,6 +161,16 @@ for i in groups:
         #     desc="move focused window to group {}".format(i.name)),
     ])
 
+
+colors = [["#24283b", "#24283b"],   #transparent blue
+          ["#0047ab", "#0047ab"],   #cobalt blue
+          ["#000000", "#000000"],   #black
+          ["#ffffff", "#ffffff"],   #white
+          ["#404040", "#404040"],   #gray
+          ["#ff0000", "#ff0000"],   #red
+          ["#800080", "#800080"],   #purple
+]
+
 layouts = [
     layout.Columns(
         border_focus=colors[0],
@@ -179,7 +181,6 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    #font = 'Fira Code Nerd Font',
     font = 'Ubuntu',
     fontsize=10,
     padding=1,
@@ -188,7 +189,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
                 widget.GroupBox(
                     borderwidth=0, 
@@ -200,21 +201,14 @@ screens = [
                 ),
                 widget.TextBox(
                     "🭀", 
-                    fontsize=30, 
-                #    background=colors[1],
+                    fontsize=30,
                     foreground=colors[0], 
-                    padding=0
+                    padding=0,
                 ),
                 widget.Prompt(
                     prompt=' </> ', 
                     background=colors[2],
                 ),
-                #widget.TextBox(
-                #    "🭀", 
-                #    fontsize=30,
-                #    foreground=colors[1],
-                #    padding=0
-                # ),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
@@ -222,33 +216,25 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                 widget.TextBox(
+                widget.TextBox(
                     "", 
-                    fontsize=40,
+                    fontsize=40, 
+                    background=colors[2], 
                     foreground=colors[0], 
-                    padding=-5
-                ),
-                widget.Systray(
-                    background=colors[0],
-                    icon_size = 15,
-                    padding=2,
-                ),
-                widget.Notify(
-                    background=colors[0],
-                    padding=10,
+                    padding=-5,
                 ),
                 widget.TextBox(
                     "", 
                     fontsize=40, 
                     background=colors[0], 
                     foreground=colors[2], 
-                    padding=-5
+                    padding=-5,
                 ),
                 widget.Wlan( 
                     background=colors[2],
                     update_interval=5,
                     mouse_callbacks = {
-                        "Button1": lambda: qtile.cmd_spawn(network),
+                        "Button1": lambda: qtile.cmd_spawn(rofi_network),
                     },
                     format = 'Wlan: {percent:2.0%}',
                     padding=10,
@@ -289,7 +275,7 @@ screens = [
                     fontsize=40, 
                     background=colors[2], 
                     foreground=colors[0],
-                    padding=-5
+                    padding=-5,
                 ),
                 widget.Clock(
                     background=colors[0],
@@ -298,6 +284,30 @@ screens = [
                         'Button3': lambda: qtile.cmd_spawn(calendar)
                     },
                     padding=10,
+                ),
+                widget.TextBox(
+                    "", 
+                    fontsize=40, 
+                    background=colors[0], 
+                    foreground=colors[2], 
+                    padding=-5,
+                ),
+                widget.Systray(
+                    icon_size = 15,
+                    margin=3,
+                ),
+                widget.Notify(
+                    padding=10,
+                ),
+                widget.Image(
+                    filename='~/.config/qtile/arch-logo.png', 
+                    margin=3, 
+                    mouse_callbacks={
+                        'Button1': 
+                        lambda: qtile.cmd_spawn(rofi_run),
+                        'Button3':
+                        lambda: qtile.cmd_spawn(rofi_power),
+                    }
                 ),
             ],
             # bar
