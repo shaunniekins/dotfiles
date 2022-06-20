@@ -1,4 +1,4 @@
-# ide_config : tmux, zsh, vim configured in a proper way
+# dotfiles : tmux, zsh, vim configured in a proper way
 
 ## Getting Started
 
@@ -12,11 +12,11 @@ Requirements :
 
 ### Install
 ```
-git clone https://github.com/mehd-io/ide_config ~/.ide_config
-cd ~/.ide_config
+git clone https://github.com/mehd-io/dotfiles ~/.dotfiles
+cd ~/.dotfiles
 ./install.sh
 ```
-Update the spark-shell path in ide_config/vim/ftplugin/python.vim.symlink & ide_config/vim/ftplugin/scala.vim.symlink
+Update the spark-shell path in dotfiles/vim/ftplugin/python.vim.symlink & dotfiles/vim/ftplugin/scala.vim.symlink
 
 ### Terminal configuration : color & fonts
 * Fonts used "DejaVu Sans Mono for Powerline.ttf" and  "Inconsolata for Powerline.otf" are in terminal/fonts folder

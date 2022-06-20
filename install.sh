@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
 
-DOTFILES=$HOME/.ide_config
+DOTFILES=$HOME/.dotfiles
 BACKUP_DIR=$HOME/dotfiles-backup
 
 echo "=============================="
