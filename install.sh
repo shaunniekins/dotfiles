@@ -109,7 +109,8 @@ ln -s $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 mkdir $HOME/.vim/ftplugin
 ln -s $DOTFILES/vim/ftplugin/python.vim.symlink $HOME/.vim/ftplugin/python.vim
 ln -s $DOTFILES/vim/ftplugin/scala.vim.symlink $HOME/.vim/ftplugin/scala.vim
-
+ln -s $DOTFILES/skhdrc.symlink $HOME/.skhdrc
+ln -s $DOTFILES/yabairc.symlink $HOME/.yabairc
 
 echo "================================================="
 echo "Installing packages vundle and activate plugins"
