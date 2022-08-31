@@ -5,11 +5,11 @@
  */
 
 * {
-    font: "Fira Code Nerd Font 10";
+    font: "Ubuntu 10";
 
     bg: #000000; /*#11121D*/
     fg: #FFFFFF;
-    highlighted: #800080;
+    highlighted: #24283b;
 
     background-color: @bg;
     text-color: @fg;
@@ -23,7 +23,7 @@ window {
     anchor:     north;
     location:   north;
     width:      100%;
-    margin:    1px;
+    margin:     1px;
 /*  padding:    4px;    */
     children:   [ horibox ];
 }
