@@ -20,14 +20,11 @@
 | Theme Switcher		| [Lxappearance](https://archlinux.org/packages/community/x86_64/lxappearance/)       |
 | Office	| [Onlyoffice](https://www.onlyoffice.com/en/desktop.aspx)											|
 | Top		| [Vtop](https://aur.archlinux.org/packages/vtop)		|
-| Typing Tutor		| [Klavaro](https://linuxmasterclub.com/klavaro/)		|
 | Notifications		| [Dunst](https://wiki.archlinux.org/title/Dunst)											|
 | Sound			| [Pulseaudio](https://wiki.archlinux.org/title/PulseAudio)		|
 | Network		| [Network manager](https://wiki.archlinux.org/title/NetworkManager), [Rofi-wifi-menu](https://github.com/ericmurphyxyz/rofi-wifi-menu)									|
-| Monitor resolution	| [Xrandr](https://wiki.archlinux.org/title/Xrandr)											|									|
+| Monitor resolution	| [ARandR](https://archlinux.org/packages/community/any/arandr/), [Xrandr](https://wiki.archlinux.org/title/Xrandr)											|									|
 | Bluetooth   | [Bluez](http://www.bluez.org/), [Blueman](https://github.com/blueman-project/blueman).    |
 | GTK Themes		| [Orchis theme](https://aur.archlinux.org/packages/orchis-theme)										|
 | Icon Theme		| Inverse blue dark			|
 | Fonts | Ubuntu	|
-
-Note: My setup is pretty simple and functional. 
