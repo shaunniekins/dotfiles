@@ -1,3 +1,4 @@
+import os
 from typing import List  # noqa: F401
 
 from libqtile import hook
@@ -23,11 +24,12 @@ import subprocess
 
 @hook.subscribe.startup
 def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.run([home])
+    
     processes = [
         ['flameshot'],
         ['dunst'],
     ]
     for p in processes:
         subprocess.Popen(p)
-
-

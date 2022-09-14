@@ -97,7 +97,7 @@ keys = [
         desc="Reload the config"),
     Key([mod, "control"], "q", 
         lazy.shutdown(), 
-        desc="Shutdown Qtile"),
+        desc="Shutdown Qtile / Log-out"),
     
     # Personal
     Key([mod], "d", 

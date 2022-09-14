@@ -141,5 +141,8 @@ screens = [
             20,
             background = colors[2],
         ),
+        # Wallpaper
+        wallpaper='~/.config/qtile/programming-wallpaper.png',
+        wallpaper_mode='stretch'
     ),
 ]
