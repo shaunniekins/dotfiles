@@ -70,8 +70,8 @@ function setup_space {
 
 setup_space 1 web
 setup_space 2 code
-setup_space 3 slack
-setup_space 4 notion
+setup_space 3 notion
+setup_space 4 slack
 setup_space 5 media
 setup_space 6 conf
 setup_space 7 chrome
@@ -81,8 +81,8 @@ setup_space 8 second_screen
 yabai -m rule --add app="^Brave Browser$" space=^1
 yabai -m rule --add app="^iTerm2$" space=^1
 yabai -m rule --add app="^Code$" space=2
-yabai -m rule --add app="^Slack$" space=3
-yabai -m rule --add app="^Notion$" space=4
+yabai -m rule --add app="^Notion$" space=3
+yabai -m rule --add app="^Slack$" space=4
 yabai -m rule --add app="^OBS Studio$" space=5
 yabai -m rule --add app="^Spotify$" space=6
 yabai -m rule --add app="^Google Chrome$" space=7
