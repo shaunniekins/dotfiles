@@ -150,3 +150,13 @@ fc-cache -vf ~/.fonts/
 # Colors
 wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
 mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
+
+echo "================================================="
+echo "Install & configure terminal"
+echo "================brew install --cask font-sf-mono-nerd-font
+================================="
+brew install --cask alacritty
+# install font
+brew tap epk/epk
+brew install --cask font-sf-mono-nerd-font
+
