@@ -1,4 +1,56 @@
-## Program / Software I Use
+# My Linux Setup on Arch
+
+## Introduction
+
+This README outlines the software and configuration I use on my Arch Linux system. Feel free to use this as a reference or inspiration for your own Linux setup.
+
+## Getting Started
+
+### 1. Install Arch Linux
+
+Follow the official Arch Linux installation guide to set up your system: [Arch Linux Installation Guide](https://archlinux.org/)
+
+### 2. Clone Dotfiles Repository
+
+Clone my dotfiles repository to access my configuration files:
+
+```bash
+git clone https://github.com/shaunniekins/dotfiles.git
+cd dotfiles
+```
+
+### 3. Install Software
+
+Use the provided install.sh script to install the software and dependencies. Make the script executable and run it:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+### 4. Replace Configurations
+
+After installing the software, replace the default configurations with my dotfiles:
+
+```bash
+# Replace Qtile configuration
+cp qtile ~/.config/qtile
+
+# Replace Dunst configuration
+cp dunst ~/.config/dunst
+
+# Replace Rofi configuration
+cp rofi ~/.config/rofi
+```
+
+Adjust the paths based on the structure of the dotfiles repository.
+
+### 5. Additional Configurations
+- Set GTK theme using Lxappearance.
+- Set icon theme to 'Inverse blue dark' in Lxappearance.
+
+
+## Software List
 
 |Program / Software		| Name																	|
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
