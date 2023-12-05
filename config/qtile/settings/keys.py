@@ -4,12 +4,11 @@ from libqtile.command import lazy
 mod = "mod4"
 mod_alt = "mod1"
 terminal = "xfce4-terminal"
-browser = "brave"
+browser = "google-chrome"
 file_manager = "pcmanfm"
 screenshot = "flameshot gui"
 # power_off = terminal + ' -e "shutdown -h now"' reboot
 power_off = terminal + ' -e "systemctl poweroff"'
-run_xampp = terminal + 'cd /opt/lampp' + 'sudo ./manager-linux-x64.run'
 calendar = terminal + ' -e "cal -y"'
 rofi_run = "rofi -show drun"
 rofi_network = "bash \"./rofi-wifi-menu/rofi-wifi-menu.sh\""
@@ -133,9 +132,6 @@ keys = [
     Key([mod, "shift"], "F4",
         lazy.spawn(volume_mute),
         desc="Volume Mute"),
-    Key([mod, "shift"], "x",
-        lazy.spawn(run_xampp),
-        desc="Run Xampp"),
     Key([mod, "shift"], "b",
         lazy.hide_show_bar(position='all'),
         desc="Toggle bars"),
