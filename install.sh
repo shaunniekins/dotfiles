@@ -28,8 +28,20 @@ clone_dotfiles() {
 
 # Define a function to replace configurations
 replace_config() {
-    echo "Replacing $1 configuration..."
-    cp $1 ~/.config/$1
+    local source_dir=$1
+    local target_dir=~/.config/$(basename $source_dir)
+
+    echo "Replacing $source_dir configuration..."
+
+    # Check if the target directory exists, and create it if not
+    if [ ! -d $target_dir ]; then
+        echo "Creating target directory: $target_dir"
+        mkdir -p $target_dir
+    fi
+
+    # Copy the configuration files
+    echo "Copying files to $target_dir..."
+    cp -r $source_dir/* $target_dir/
 }
 
 # Install packages
@@ -74,3 +86,11 @@ clone_dotfiles
 replace_config qtile
 replace_config dunst
 replace_config rofi
+
+# Enable and start ly.service
+sudo systemctl enable ly.service
+sudo systemctl start ly.service
+
+echo "Configuration complete. Restarting the system in 5 seconds..."
+sleep 5
+sudo reboot
