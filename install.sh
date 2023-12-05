@@ -19,6 +19,19 @@ install_package() {
     yay -S --noconfirm $1
 }
 
+# Define a function to clone dotfiles repository
+clone_dotfiles() {
+    echo "Cloning dotfiles repository..."
+    git clone https://github.com/shaunniekins/dotfiles.git
+    cd dotfiles
+}
+
+# Define a function to replace configurations
+replace_config() {
+    echo "Replacing $1 configuration..."
+    cp $1 ~/.config/$1
+}
+
 # Install packages
 install_package qtile
 install_package ly
@@ -53,3 +66,11 @@ lxappearance
 
 # Set icon theme (select 'Inverse blue dark' in lxappearance)
 lxappearance
+
+# Clone dotfiles repository
+clone_dotfiles
+
+# Replace configurations
+replace_config qtile
+replace_config dunst
+replace_config rofi
