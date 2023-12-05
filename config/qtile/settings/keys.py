@@ -12,14 +12,6 @@ power_off = terminal + ' -e "systemctl poweroff"'
 calendar = terminal + ' -e "cal -y"'
 rofi_run = "rofi -show drun"
 rofi_network = "bash \"./rofi-wifi-menu/rofi-wifi-menu.sh\""
-# volume_up = "bash \"./.config/qtile/volumeControl.sh up\""
-# volume_up = terminal + ' -e "./.config/qtile/volumeControl.sh up"'
-# volume_down = terminal + ' -e "./.config/qtile/volumeControl.sh down"'
-# volume_mute = terminal + ' -e "./.config/qtile/volumeControl.sh mute"'
-
-volume_up = "amixer -q set Master 10%+"
-volume_down = "amixer -q set Master 10%-"
-volume_mute = "amixer -q set Master toggle"
 
 keys = [
     # Switch between windows
@@ -117,21 +109,26 @@ keys = [
     Key([mod, "shift"], "f",
         lazy.spawn(screenshot),
         desc="Run Flameshot"),
-    Key([mod, "shift"], "F5", 
-        lazy.spawn("brightnessctl s +5%"),
+    
+    # Adjust brightness
+    Key([], "XF86MonBrightnessUp",
+        lazy.spawn("brightnessctl set +10%"),
         desc="Brightness Up"),
-    Key([mod, "shift"], "F6",
-        lazy.spawn("brightnessctl s 5%-"),
+    Key([], "XF86MonBrightnessDown",
+        lazy.spawn("brightnessctl set 10%-"),
         desc="Brightness Down"),
-    Key([mod, "shift"], "F2",
-        lazy.spawn(volume_up),
+
+    # Adjust volume
+    Key([], "XF86AudioRaiseVolume",
+        lazy.spawn("amixer -q set Master 10%+"),
         desc="Volume Up"),
-    Key([mod, "shift"], "F3",
-        lazy.spawn(volume_down),
+    Key([], "XF86AudioLowerVolume",
+        lazy.spawn("amixer -q set Master 10%-"),
         desc="Volume Down"),
-    Key([mod, "shift"], "F4",
-        lazy.spawn(volume_mute),
+    Key([], "XF86AudioMute",
+        lazy.spawn("amixer -q set Master toggle"),
         desc="Volume Mute"),
+    
     Key([mod, "shift"], "b",
         lazy.hide_show_bar(position='all'),
         desc="Toggle bars"),
