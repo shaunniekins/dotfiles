@@ -15,6 +15,7 @@ Requirements :
 git clone https://github.com/mehd-io/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
+./install_sketchybar.sh
 ```
 Update the spark-shell path in dotfiles/vim/ftplugin/python.vim.symlink & dotfiles/vim/ftplugin/scala.vim.symlink
 
