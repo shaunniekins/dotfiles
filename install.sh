@@ -12,6 +12,7 @@ mkdir -p $BACKUP_DIR
 
 linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
 
+# backup up any existing dotfiles in ~ and symlink new ones from .dotfiles
 for file in $linkables; do
     filename=".$( basename $file '.symlink' )"
     target="$HOME/$filename"
@@ -23,11 +24,28 @@ for file in $linkables; do
     fi
 done
 
+# backup from .config
+folders_to_backup=("borders" "alacritty")
+
+# Loop through each folder and back it up
+for folder in "${folders_to_backup[@]}"; do
+    original_folder="$HOME/.config/$folder"
+    backup_folder="${original_folder}_backup"
+
+    if [ -d "$original_folder" ]; then
+        mv "$original_folder" "$backup_folder"
+        echo "Backed up $folder to ${folder}_backup"
+    else
+        echo "Folder $folder does not exist, skipping..."
+    fi
+done
+
+
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
 
-package_to_install="vim
+package_to_install="neovim
     tmux
     tree
     wget
@@ -92,7 +110,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/ba
 
 
 echo "================================================="
-echo "Symlink zsh theme, tmux.conf, vimrc, zshrc"
+echo "Symlink zsh theme, tmux.conf, zshrc"
 echo "================================================="
 
 
@@ -101,60 +119,23 @@ echo "Symlinking dotfiles"
 rm -rf $HOME/.oh-my-zsh/themes/candy.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/themes/candy.zsh-theme
-ln -s $DOTFILES/vim/vimrc.symlink $HOME/.vimrc
 ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 ln -s -f $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 ln -s $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
-mkdir $HOME/.vim/ftplugin
-ln -s $DOTFILES/vim/ftplugin/python.vim.symlink $HOME/.vim/ftplugin/python.vim
-ln -s $DOTFILES/vim/ftplugin/scala.vim.symlink $HOME/.vim/ftplugin/scala.vim
 ln -s $DOTFILES/skhdrc.symlink $HOME/.skhdrc
 ln -s $DOTFILES/yabairc.symlink $HOME/.yabairc
-
-echo "================================================="
-echo "Installing packages vundle and activate plugins"
-echo "================================================="
-
-# Install Vundle if it is not installed
-echo
-if [ ! -d $HOME/.vim/bundle/Vundle.vim ]
-then
-    echo "Installing Vundle"
-    sudo mv $HOME/.vim $HOME/.vim.old
-    mkdir -p $HOME/.vim/bundle
-    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
-else
-    echo "Vundle already installed"
-fi
+mkdir -p $HOME/.config/alacritty
+ln -s $DOTFILES/alacritty/alacritty.yml.symlink $HOME/.config/alacritty/alacritty.yml
+mkdir -p $HOME/.config/borders
+ln -s $DOTFILES/borders/bordersrc.symlink $HOME/.config/borders/bordersrc
 
 #default bash is zsh
 chsh -s /bin/zsh
 
-# This hack removes the Vim UI output
-# Source: https://github.com/VundleVim/Vundle.vim/issues/511
-echo "Installing Vundle plugins"
-echo | echo | vim +PluginInstall +qall &>/dev/null
-
-echo "================================================="
-echo "Font & color for vim"
-echo "================================================="
-
-# fonts
-wget https://github.com/powerline/fonts/blob/master/Inconsolata/Inconsolata%20for%20Powerline.otf
-wget https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf
-mkdir -p ~/.fonts && mv DejaVu\ Sans\ Mono\ for\ Powerline.ttf ~/.fonts/ && mv Inconsolata\ for\ Powerline.otf ~/.fonts/
-## for centos/ubuntu/ mac ?!
-fc-cache -vf ~/.fonts/
-
-# Colors
-wget https://raw.githubusercontent.com/vim-scripts/wombat256.vim/master/colors/wombat256mod.vim
-mkdir -p $HOME/.vim/colors && mv wombat256mod.vim $HOME/.vim/colors/
-
 echo "================================================="
 echo "Install & configure terminal"
-echo "================brew install --cask font-sf-mono-nerd-font
-================================="
+echo "=================================================" 
 brew install --cask alacritty
 # install font
 brew tap epk/epk
