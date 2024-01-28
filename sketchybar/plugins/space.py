@@ -174,4 +174,10 @@ for app in apps:
 args = ' '.join([f'--set space.{space} label="{to_formatted_icons(apps)}" label.drawing=on' for space, apps in spaces.items()])
 default_args = "--set spaces_bracket drawing=off --set '/space\..*/' background.drawing=on --animate sin 10"
 
-os.system(f'sketchybar -m {default_args} {args}')
+args2 = ''
+spaces = json.loads(os.popen('yabai -m query --spaces').read())
+for space in spaces:
+    if not space['windows']:
+        args2 = f'{args2} --set space.{space["index"]} label="" label.drawing=off'
+
+os.system(f'sketchybar -m {default_args} {args} {args2}')
