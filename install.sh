@@ -25,7 +25,7 @@ for file in $linkables; do
 done
 
 # backup from .config
-folders_to_backup=("borders" "alacritty")
+# folders_to_backup=("borders")
 
 # Loop through each folder and back it up
 for folder in "${folders_to_backup[@]}"; do
@@ -40,17 +40,21 @@ for folder in "${folders_to_backup[@]}"; do
     fi
 done
 
-
 echo "=============================="
 echo -e "\n\nInstalling packages ..."
 echo "=============================="
 
-package_to_install="neovim
+package_to_install="
+    neovim
+    cmatrix
+    neofetch
     tmux
     tree
     wget
     zsh
     curl
+    koekeishiya/formulae/yabai
+    koekeishiya/formulae/skhd
 "
  if cat /etc/*release | grep ^NAME | grep CentOS; then
     echo "==============================================="
@@ -102,6 +106,11 @@ package_to_install="neovim
     exit 1;
  fi
 
+
+yabai --start-service
+skhd --start-service
+
+
 echo "================================================="
 echo "Installing packages Oh-my-zsh"
 echo "================================================="
@@ -119,25 +128,23 @@ echo "Symlinking dotfiles"
 rm -rf $HOME/.oh-my-zsh/themes/candy.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
 ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/themes/candy.zsh-theme
+
 ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 ln -s -f $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
+
 ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 ln -s $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
-ln -s $DOTFILES/skhdrc.symlink $HOME/.skhdrc
-ln -s $DOTFILES/yabairc.symlink $HOME/.yabairc
-mkdir -p $HOME/.config/alacritty
-ln -s $DOTFILES/alacritty/alacritty.yml.symlink $HOME/.config/alacritty/alacritty.yml
+
+ln -s $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
+
+ln -s $DOTFILES/yabai/yabairc.symlink $HOME/.yabairc
+
 mkdir -p $HOME/.config/borders
 ln -s $DOTFILES/borders/bordersrc.symlink $HOME/.config/borders/bordersrc
 
 #default bash is zsh
 chsh -s /bin/zsh
 
-echo "================================================="
-echo "Install & configure terminal"
-echo "=================================================" 
-brew install --cask alacritty
-# install font
-brew tap epk/epk
-brew install --cask font-sf-mono-nerd-font
-
+# Restart services to apply new configs
+yabai --restart-service
+skhd --restart-service

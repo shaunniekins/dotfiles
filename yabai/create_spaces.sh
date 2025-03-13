@@ -16,12 +16,5 @@ function setup_space {
 
 
 setup_space 1 web
-setup_space 2 code
-setup_space 3 notion
-setup_space 4 messaging
-setup_space 5 edit
+setup_space 2 code 
 setup_space 6 second_screen
-
-
-sketchybar --trigger space_change --trigger windows_on_spaces
-
