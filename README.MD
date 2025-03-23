@@ -4,48 +4,63 @@
 
 ### Prerequisite
 
-The install script backup the existing configuration file, but read below before running it !
-Requirements :
+The install script backs up existing configuration files, but please read below before running it!
+Requirements:
 
 * git
-* brew (on MacOs)
-* zsh 5.0.5 minum (otherwise space-ship theme will not recognize some colors)
-** tested on MacOs/Ubuntu/Debian/Centos
+* brew (on MacOS)
+* zsh 5.0.5 minimum (otherwise some themes may not display colors correctly)
+* Tested on MacOS/Ubuntu/Debian/Centos
 
 ### Install
 
 ```bash
 git clone https://github.com/shaunniekins/dotfiles ~/.dotfiles
-cd ~/dotfiles
+cd ~/.dotfiles
 ./install.sh
 ```
 
-Update the spark-shell path in dotfiles/vim/ftplugin/python.vim.symlink & dotfiles/vim/ftplugin/scala.vim.symlink
+### Terminal configuration: color & fonts
 
-### Terminal configuration : color & fonts
-
-* Fonts used "DejaVu Sans Mono for Powerline.ttf" and  "Inconsolata for Powerline.otf" are in terminal/fonts folder
-* colors used "FrontEndDelight" are in terminal/colors folder (iterm2) for more colors or other terminal support, check : <https://github.com/mbadolato/iTerm2-Color-Schemes>
+* Fonts used "DejaVu Sans Mono for Powerline.ttf" and "Inconsolata for Powerline.otf" are in terminal/fonts folder
+* Colors used "FrontEndDelight" are in terminal/colors folder (iterm2) for more colors or other terminal support, check: <https://github.com/mbadolato/iTerm2-Color-Schemes>
 
 ## About install.sh
 
-The repo contains all configuration I use with tmux, zsh, and vim.
+The repo contains all configuration I use with tmux, zsh, yabai, and skhd.
 
-The install script does the following  :
+The install script does the following:
 
-* Install required package depending on OS (tmux/zsh/oh-my-zsh/vim)
-* Install vim plugins
-* Symlink tmux.conf, .zshrc, .vimrc, and a theme of oh-my-zsh (spaceship)
+* Install required packages depending on OS (tmux/zsh/oh-my-zsh/neovim)
+* Install zsh plugins (zsh-autosuggestions, zsh-syntax-highlighting)
+* Set up Pure prompt
+* Symlink tmux.conf, .zshrc, .yabairc, .skhdrc and other configuration files
 
-## Oh-my-zsh theme : spaceship
+## zsh with Pure prompt
 
-Spaceship is a highly flexible theme of oh my zsh, for more info : <https://github.com/denysdovhan/spaceship-zsh-theme>
+Pure is a minimal and fast ZSH prompt. For more info: <https://github.com/sindresorhus/pure>
 
 ## Tmux
 
-command key remapped from ctrl+b to ctrl+a
-Using theme from : <https://github.com/gpakosz/.tmux>
+Command key remapped from ctrl+b to ctrl+a
+Using theme from: <https://github.com/gpakosz/.tmux>
+
+### Copying text in tmux (macOS)
+
+* Regular method: Hold Shift while selecting text with mouse
+
+* If mouse selection/tmux-yank stops working on macOS:
+  * Use Cmd+R to enter selection mode
+  * Select text you want to copy
+  * Press Enter to copy the selection to clipboard
+
+## Yabai and skhd
+
+Yabai is a tiling window manager with skhd for keyboard shortcuts.
+
+* Yabai: <https://github.com/koekeishiya/yabai>
+* skhd: <https://github.com/koekeishiya/skhd>
 
 ## To do
 
-* add screenshots
+* Add screenshots

@@ -4,11 +4,31 @@
 DOTFILES=$HOME/.dotfiles
 BACKUP_DIR=$HOME/dotfiles-backup
 
+# Function to ask for user confirmation
+confirm() {
+    read -p "$1 (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 echo "=============================="
 echo -e "\n\nBackup existing config ..."
 echo "=============================="
 echo "Creating backup directory at $BACKUP_DIR"
 mkdir -p $BACKUP_DIR
+
+# Option to override existing configuration
+if confirm "Would you like to override existing configuration files (This will remove existing files before creating symlinks)?"; then
+    OVERRIDE_EXISTING=true
+    echo "Will override existing configuration files."
+else
+    OVERRIDE_EXISTING=false
+    echo "Will backup existing configuration files."
+fi
 
 linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
 
@@ -17,26 +37,15 @@ for file in $linkables; do
     filename=".$( basename $file '.symlink' )"
     target="$HOME/$filename"
     if [ -f $target ]; then
-        echo "backing up $filename"
-        cp $target $BACKUP_DIR
+        if [ "$OVERRIDE_EXISTING" = true ]; then
+            echo "removing existing $filename"
+            rm $target
+        else
+            echo "backing up $filename"
+            cp $target $BACKUP_DIR
+        fi
     else
         echo -e "$filename does not exist at this location or is a symlink"
-    fi
-done
-
-# backup from .config
-# folders_to_backup=("borders")
-
-# Loop through each folder and back it up
-for folder in "${folders_to_backup[@]}"; do
-    original_folder="$HOME/.config/$folder"
-    backup_folder="${original_folder}_backup"
-
-    if [ -d "$original_folder" ]; then
-        mv "$original_folder" "$backup_folder"
-        echo "Backed up $folder to ${folder}_backup"
-    else
-        echo "Folder $folder does not exist, skipping..."
     fi
 done
 
@@ -107,44 +116,119 @@ package_to_install="
  fi
 
 
-yabai --start-service
-skhd --start-service
+# Start yabai and skhd services
+if uname -s | grep Darwin; then
+    yabai --start-service
+    skhd --start-service
+fi
 
 
 echo "================================================="
-echo "Installing packages Oh-my-zsh"
+echo "Installing Oh-my-zsh"
 echo "================================================="
-# Installing oh-my-zsh within a script. Source: https://github.com/robbyrussell/oh-my-zsh/issues/5873
+# Remove existing Oh-My-Zsh installation if it exists
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "Removing existing Oh-My-Zsh installation..."
+    rm -rf "$HOME/.oh-my-zsh"
+fi
+# Install Oh-My-Zsh fresh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)" -s --batch
 
 
 echo "================================================="
-echo "Symlink zsh theme, tmux.conf, zshrc"
+echo "Installing zsh plugins"
+echo "================================================="
+# Execute the plugin setup script
+bash $DOTFILES/zsh/setup_plugins.sh
+
+# Install Pure prompt
+echo "================================================="
+echo "Installing Pure prompt"
+echo "================================================="
+# Execute Pure setup script with proper environment
+bash $DOTFILES/zsh/setup_pure.sh
+# Verify Pure prompt is installed correctly
+if [ ! -f "$HOME/.zfunctions/prompt_pure_setup" ]; then
+    echo "Warning: Pure prompt setup failed. Installing directly..."
+    mkdir -p "$HOME/.zfunctions"
+    git clone https://github.com/sindresorhus/pure.git "$HOME/.zfunctions/pure"
+    ln -sf "$HOME/.zfunctions/pure/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
+    ln -sf "$HOME/.zfunctions/pure/async.zsh" "$HOME/.zfunctions/async"
+fi
+
+echo "================================================="
+echo "Symlinking configuration files"
 echo "================================================="
 
+# Function to create a symlink, removing the target if it exists
+create_symlink() {
+    local source=$1
+    local target=$2
+    
+    # Remove existing file or symlink if OVERRIDE_EXISTING is true
+    if [ "$OVERRIDE_EXISTING" = true ] && [ -e "$target" ]; then
+        echo "Removing existing $target"
+        rm -f "$target"
+    fi
+    
+    # Create the symlink
+    if [ ! -e "$target" ]; then
+        echo "Creating symlink: $target -> $source"
+        ln -s $source $target
+    else
+        echo "Skipping $target (already exists)"
+    fi
+}
 
-echo "Symlinking dotfiles"
-#Remove default theme candy
-rm -rf $HOME/.oh-my-zsh/themes/candy.zsh-theme
-ln -s $DOTFILES/zsh/oh-my-zsh/themes/spaceship.zsh-theme.symlink $HOME/.oh-my-zsh/themes/spaceship.zsh-theme
-ln -s $DOTFILES/zsh/oh-my-zsh/themes/candy.zsh-theme.symlink $HOME/.oh-my-zsh/themes/candy.zsh-theme
+# Create symlinks for zsh
+create_symlink $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
+create_symlink $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 
-ln -s -f $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
-ln -s -f $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
+# Create symlinks for tmux
+create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
+create_symlink $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 
-ln -s $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
-ln -s $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
+# Create symlinks for yabai and skhd
+create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
+create_symlink $DOTFILES/yabai/yabairc.symlink $HOME/.yabairc
 
-ln -s $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
-
-ln -s $DOTFILES/yabai/yabairc.symlink $HOME/.yabairc
-
-mkdir -p $HOME/.config/borders
-ln -s $DOTFILES/borders/bordersrc.symlink $HOME/.config/borders/bordersrc
-
-#default bash is zsh
+# Set zsh as default shell
 chsh -s /bin/zsh
 
-# Restart services to apply new configs
-yabai --restart-service
-skhd --restart-service
+# Restart services to apply new configs on macOS
+if uname -s | grep Darwin; then
+    yabai --restart-service
+    skhd --restart-service
+fi
+
+# Setup tmux plugin manager if not already installed
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing Tmux Plugin Manager..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
+# Refresh configuration 
+echo "================================================="
+echo "Refreshing configuration..."
+echo "================================================="
+if [ -f "$HOME/.zshrc" ]; then
+    echo "Sourcing .zshrc to apply changes immediately"
+    # Source zshrc if possible, otherwise prompt user to restart shell
+    if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+        source "$HOME/.zshrc" 2>/dev/null || echo "Please restart your terminal or run 'source ~/.zshrc' to apply changes"
+    else
+        echo "Please restart your terminal or switch to zsh and run 'source ~/.zshrc' to apply changes"
+    fi
+fi
+
+echo "================================================="
+echo "Installation complete!"
+echo "================================================="
+echo "To start using your new setup:"
+echo "1. Start a new terminal session"
+echo "2. To start tmux, type 'tmux'"
+echo "3. Inside tmux, press prefix + I (capital I) to install tmux plugins"
+echo "   (prefix is Ctrl+a by default)"
+echo "4. For text selection in tmux: hold Shift while selecting text"
+echo "   or use tmux copy mode (prefix + [) to navigate and select"
+echo "================================================="

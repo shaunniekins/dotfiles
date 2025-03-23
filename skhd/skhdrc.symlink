@@ -92,5 +92,5 @@ alt - e : yabai -m window --toggle split
 alt - c : open -a 'Visual Studio Code'
 alt - u : open -a 'Google Chrome'
 
-cmd - return : osascript -e 'tell application "Terminal" to create window with default profile command ""' || open -na Terminal
-# cmd - return : open -a 'Terminal'
+# cmd - return : osascript -e 'tell application "Terminal" to create window with default profile command ""' || open -na Terminal
+cmd - return : open -a 'Terminal'
