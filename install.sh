@@ -109,6 +109,11 @@ package_to_install="
     echo "================================================="
     brew update
     brew install $package_to_install
+    
+    echo "================================================="
+    echo "Installing Aerospace window manager on Mac OS"
+    echo "================================================="
+    brew install --cask nikitabobko/tap/aerospace
  else
     echo "OS NOT DETECTED, couldn't install package $package_to_install"
     exit 1;
@@ -189,12 +194,22 @@ create_symlink $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 # Create symlinks for skhd
 create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
 
+# Create symlink for Aerospace on macOS
+if uname -s | grep Darwin; then
+    create_symlink $DOTFILES/aerospace/aerospace.toml $HOME/.aerospace.toml
+fi
+
 # Set zsh as default shell
 chsh -s /bin/zsh
 
 # Restart services to apply new configs on macOS
 if uname -s | grep Darwin; then
     skhd --restart-service
+    # Start Aerospace if installed
+    if command -v aerospace &>/dev/null; then
+        killall aerospace 2>/dev/null || true
+        aerospace &
+    fi
     source ~/.zshrc
     source ~/.zprofile
     source ~/.tmux.conf
