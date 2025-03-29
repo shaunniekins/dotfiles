@@ -62,7 +62,6 @@ package_to_install="
     wget
     zsh
     curl
-    koekeishiya/formulae/yabai
     koekeishiya/formulae/skhd
 "
  if cat /etc/*release | grep ^NAME | grep CentOS; then
@@ -116,9 +115,8 @@ package_to_install="
  fi
 
 
-# Start yabai and skhd services
+# Start skhd services
 if uname -s | grep Darwin; then
-    yabai --start-service
     skhd --start-service
 fi
 
@@ -188,17 +186,20 @@ create_symlink $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 create_symlink $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 
-# Create symlinks for yabai and skhd
+# Create symlinks for skhd
 create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
-create_symlink $DOTFILES/yabai/yabairc.symlink $HOME/.yabairc
 
 # Set zsh as default shell
 chsh -s /bin/zsh
 
 # Restart services to apply new configs on macOS
 if uname -s | grep Darwin; then
-    yabai --restart-service
     skhd --restart-service
+    source ~/.zshrc
+    source ~/.zprofile
+    source ~/.tmux.conf
+    source ~/.tmux.conf.local
+    source ~/.skhdrc
 fi
 
 # Setup tmux plugin manager if not already installed
@@ -223,12 +224,4 @@ fi
 
 echo "================================================="
 echo "Installation complete!"
-echo "================================================="
-echo "To start using your new setup:"
-echo "1. Start a new terminal session"
-echo "2. To start tmux, type 'tmux'"
-echo "3. Inside tmux, press prefix + I (capital I) to install tmux plugins"
-echo "   (prefix is Ctrl+a by default)"
-echo "4. For text selection in tmux: hold Shift while selecting text"
-echo "   or use tmux copy mode (prefix + [) to navigate and select"
 echo "================================================="

@@ -20,5 +20,15 @@ git clone https://github.com/sindresorhus/pure.git "$HOME/.zfunctions/pure"
 ln -sf "$HOME/.zfunctions/pure/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
 ln -sf "$HOME/.zfunctions/pure/async.zsh" "$HOME/.zfunctions/async"
 
+# Setup zsh syntax highlighting
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+echo "Setting up zsh syntax highlighting..."
+if [ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+  echo "Removing existing zsh-syntax-highlighting..."
+  rm -rf "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+fi
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+echo "zsh syntax highlighting setup complete!"
+
 echo "Pure prompt setup complete!"
 chmod +x "$0"

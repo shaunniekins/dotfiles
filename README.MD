@@ -27,14 +27,14 @@ cd ~/.dotfiles
 
 ## About install.sh
 
-The repo contains all configuration I use with tmux, zsh, yabai, and skhd.
+The repo contains all configuration I use with tmux, zsh, and skhd.
 
 The install script does the following:
 
 * Install required packages depending on OS (tmux/zsh/oh-my-zsh/neovim)
 * Install zsh plugins (zsh-autosuggestions, zsh-syntax-highlighting)
 * Set up Pure prompt
-* Symlink tmux.conf, .zshrc, .yabairc, .skhdrc and other configuration files
+* Symlink tmux.conf, .zshrc, .skhdrc and other configuration files
 
 ## zsh with Pure prompt
 
@@ -54,11 +54,10 @@ Using theme from: <https://github.com/gpakosz/.tmux>
   * Select text you want to copy
   * Press Enter to copy the selection to clipboard
 
-## Yabai and skhd
+## skhd
 
-Yabai is a tiling window manager with skhd for keyboard shortcuts.
+Skhd for keyboard shortcuts.
 
-* Yabai: <https://github.com/koekeishiya/yabai>
 * skhd: <https://github.com/koekeishiya/skhd>
 
 ## To do
