@@ -1,3 +1,14 @@
+# Window/Tab Navigation:
+# - Switch to next window: Ctrl+b then n
+# - Switch to previous window: Ctrl+b then p
+# - Switch to specific window: Ctrl+b then [window number]
+# - Switch to last window: Ctrl+b then ^
+# - List all windows: Ctrl+b then w
+
+# Renaming:
+# - Rename current window: Ctrl+b then , (comma)
+# - Rename session: Ctrl+b then $
+
 # Plugin Management Instructions:
 # - The prefix key is Ctrl+b
 # 1. Install all plugins: Press prefix + I (capital i) - that's Ctrl+b then I
@@ -5,10 +16,16 @@
 # 3. Remove/uninstall plugins not in the list: Press prefix + alt + u - that's Ctrl+b then alt+u
 
 # List of plugins
+set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'vaaleyard/tmux-dotbar'
+
+# Tmux Resurrect & Continuum settings
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+set -g @resurrect-strategy-nvim 'session'
 
 set -ga terminal-overrides ",screen-256color*:Tc"
 set-option -g default-terminal "screen-256color"
@@ -65,17 +82,15 @@ bind-key -r S run-shell "~/.local/bin/tmux-sessionizer ~/personal/developer-prod
 unbind % # Remove default binding for vertical split
 bind h split-window -h # Set 'h' to split vertically (creating panes side by side)
 
-# clear-history
-
 ### STATUS BAR ###
 set -g status-style "bg=#2e3440,fg=#d8dee9"
-set -g status-left "#[bg=#8f00ff,fg=#2e3440]  #{session_name}  #[bg=#005f87,fg=#8f00ff]#[bg=#005f87,fg=#d8dee9]#{?client_prefix, PREFIX ,}#[bg=#2e3440,fg=#005f87]"
+set -g status-left "#[bg=#8f00ff,fg=#2e3440]  #{session_name}  #[bg=#005f87,fg=#8f00ff]#[bg=#005f87,fg=#d8dee9]#{?client_prefix, PREFIX ,}#[bg=#2e3440,fg=#005f87]"
 set -g status-left-length 500
-set -g window-status-format "#[bg=#2e3440] #{window_index}-#{window_name} #{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440 fg=#2e3440],}"
-set -g window-status-current-format "#[bg=#88c0d0,fg=#2e3440]#[fg=#2e3440] #{window_index}-#{window_name} #[bg=#2e3440,fg=#88c0d0]#{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440],}"
+set -g window-status-format "#[bg=#2e3440] #{window_index}-#{window_name} #{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440 fg=#2e3440],}"
+set -g window-status-current-format "#[bg=#88c0d0,fg=#2e3440]#[fg=#2e3440] #{window_index}-#{window_name} #[bg=#2e3440,fg=#88c0d0]#{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440],}"
 set -g window-status-separator ""
-set -g status-right "#[bg=#2e3440,fg=#88c0d0] #[bg=#88c0d0,fg=#2e3440] #(whoami) \
-#[bg=#88c0d0,fg=#00ff9c]#[bg=#00ff9c,fg=#2e3440] #(date +%a-%b-%d) #[fg=#8f00ff]#[bg=#8f00ff,fg=#2e3440] #(date +%H:%M) "
+set -g status-right "#[bg=#2e3440,fg=#88c0d0] #[bg=#88c0d0,fg=#2e3440] #(whoami) \
+#[bg=#88c0d0,fg=#00ff9c]#[bg=#00ff9c,fg=#2e3440] #(date +%a-%b-%d) #[fg=#8f00ff]#[bg=#8f00ff,fg=#2e3440] #(date +%H:%M) "
 set -g status-right-length 500
 set -g status-interval 1
 
@@ -89,45 +104,29 @@ set -g pane-border-status 'top'
 set -g pane-border-style fg=#00ff9c
 set -g pane-active-border-style fg=#00ff9c
 
-
-
-
-
 # Comments
-# set -g status-right "#(pwd) #[fg=#2e3440]#[bg=#2e3440,fg=#88c0d0] #(whoami) #[bg=#88c0d0,fg=#2e3440] #{host_short} \
+# set -g status-right "#(pwd) #[fg=#2e3440]#[bg=#2e3440,fg=#88c0d0] #(whoami) #[bg=#88c0d0,fg=#2e3440] #{host_short} \
 
-
-
-# NEW
-
-# supposing you use catppuccin moccha
 set -g @tmux-dotbar-bg "#1e1e2e"
 set -g @tmux-dotbar-fg "#585b70"
-set -g @tmux-dotbar-fg-current "#cdd6f4"
+# set -g @tmux-dotbar-fg-current "#cdd6f4"
+set -g @tmux-dotbar-fg-current "#008000"
 set -g @tmux-dotbar-fg-session "#9399b2"
 set -g @tmux-dotbar-fg-prefix "#cba6f7"
-
-set -g @tmux-dotbar-right true
-
-set -g @tmux-dotbar-position top
-
-
-set -g @tmux-dotbar-fg "#0B0E14"
-set -g @tmux-dotbar-bg "#475266"
-set -g @tmux-dotbar-fg-current "#BFBDB6"
-set -g @tmux-dotbar-fg-session "#565B66"
-set -g @tmux-dotbar-fg-prefix "#95E6CB"
 set -g @tmux-dotbar-position "bottom"
 set -g @tmux-dotbar-justify "absolute-centre"
-set -g @tmux-dotbar-left "true"
-set -g @tmux-dotbar-status-left "#S" # see code
-set -g @tmux-dotbar-right "false"
-set -g @tmux-dotbar-status-right "%H:%M" # see code
-set -g @tmux-dotbar-window-status-format " #W "
-set -g @tmux-dotbar-window-status-separator " • "
-set -g @tmux-dotbar-maximized-icon "󰊓"
-set -g @tmux-dotbar-show-maximized-icon-for-all-tabs false
+# set -g @tmux-dotbar-left "true"
+# set -g @tmux-dotbar-status-left "#S" # see code
+set -g @tmux-dotbar-right "true"
+# set -g @tmux-dotbar-status-right "%H:%M" # see code
+# set -g @tmux-dotbar-window-status-format " #W "
+# set -g @tmux-dotbar-window-status-separator " • "
+# set -g @tmux-dotbar-maximized-icon "󰊓"
+# set -g @tmux-dotbar-show-maximized-icon-for-all-tabs false
 
 set-option -g renumber-windows on
 set -g base-index 1
 setw -g pane-base-index 1
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
