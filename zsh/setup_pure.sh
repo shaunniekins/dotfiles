@@ -1,34 +1,38 @@
 #!/bin/bash
-
-# This script installs and sets up Pure prompt for zsh
+# ============================================================================
+# PURE PROMPT SETUP SCRIPT
+# ============================================================================
+# This script installs Pure prompt for zsh
 # Pure prompt: https://github.com/sindresorhus/pure
+# ============================================================================
 
-# Create directories if they don't exist
-mkdir -p "$HOME/.zfunctions"
+set -e  # Exit on error
 
-echo "Setting up Pure prompt..."
-# Always reinstall the Pure repository
-if [ -d "$HOME/.zfunctions/pure" ]; then
-  echo "Removing existing Pure prompt installation..."
-  rm -rf "$HOME/.zfunctions/pure"
+PURE_DIR="$HOME/.zfunctions/pure"
+ZFUNCTIONS_DIR="$HOME/.zfunctions"
+
+# ============================================================================
+# SETUP DIRECTORIES
+# ============================================================================
+echo "📁 Setting up directories..."
+mkdir -p "$ZFUNCTIONS_DIR"
+
+# ============================================================================
+# INSTALL PURE PROMPT
+# ============================================================================
+echo "🎨 Installing Pure prompt..."
+if [ -d "$PURE_DIR" ]; then
+  echo "  → Removing existing installation..."
+  rm -rf "$PURE_DIR"
 fi
 
-echo "Installing Pure prompt..."
-git clone https://github.com/sindresorhus/pure.git "$HOME/.zfunctions/pure"
+git clone https://github.com/sindresorhus/pure.git "$PURE_DIR"
 
-# Create symlinks to Pure functions in .zfunctions directory
-ln -sf "$HOME/.zfunctions/pure/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
-ln -sf "$HOME/.zfunctions/pure/async.zsh" "$HOME/.zfunctions/async"
+# ============================================================================
+# CREATE SYMLINKS
+# ============================================================================
+echo "🔗 Creating symlinks..."
+ln -sf "$PURE_DIR/pure.zsh" "$ZFUNCTIONS_DIR/prompt_pure_setup"
+ln -sf "$PURE_DIR/async.zsh" "$ZFUNCTIONS_DIR/async"
 
-# Setup zsh syntax highlighting
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-echo "Setting up zsh syntax highlighting..."
-if [ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-  echo "Removing existing zsh-syntax-highlighting..."
-  rm -rf "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-fi
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-echo "zsh syntax highlighting setup complete!"
-
-echo "Pure prompt setup complete!"
-chmod +x "$0"
+echo "✅ Pure prompt setup complete!"

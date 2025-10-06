@@ -1,38 +1,50 @@
 #!/bin/bash
+# ============================================================================
+# ZSH PLUGINS SETUP SCRIPT
+# ============================================================================
+# This script installs and sets up zsh plugins for oh-my-zsh
+# ============================================================================
 
-# This script installs and sets up zsh plugins
+set -e  # Exit on error
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-CURRENT_DIR=$(pwd)
 
-# Check if Oh-My-Zsh is installed
+# ============================================================================
+# VALIDATION
+# ============================================================================
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  echo "Oh-My-Zsh not found. Please install Oh-My-Zsh first."
+  echo "❌ Oh-My-Zsh not found. Please install Oh-My-Zsh first."
   exit 1
 fi
 
-# Ensure the plugins directory exists
+# ============================================================================
+# SETUP PLUGINS DIRECTORY
+# ============================================================================
+echo "📁 Setting up plugins directory..."
 mkdir -p "$ZSH_CUSTOM/plugins"
 
-# Install/reinstall zsh-autosuggestions
-echo "Installing/reinstalling zsh-autosuggestions..."
-if [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-  rm -rf "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-fi
-git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-
-# Install/reinstall zsh-syntax-highlighting
-echo "Installing/reinstalling zsh-syntax-highlighting..."
+# ============================================================================
+# INSTALL ZSH-SYNTAX-HIGHLIGHTING
+# ============================================================================
+echo "📦 Installing zsh-syntax-highlighting..."
 if [ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+  echo "  → Removing existing installation..."
   rm -rf "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+  "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 
-# Install reattach-to-user-namespace for macOS clipboard support
+# ============================================================================
+# MACOS CLIPBOARD SUPPORT
+# ============================================================================
 if [ "$(uname)" = "Darwin" ]; then
-  echo "Installing reattach-to-user-namespace for clipboard support..."
-  brew install reattach-to-user-namespace 2>/dev/null || echo "Failed to install reattach-to-user-namespace, please install manually"
+  echo "🍎 Setting up macOS clipboard support..."
+  if ! command -v reattach-to-user-namespace &> /dev/null; then
+    brew install reattach-to-user-namespace 2>/dev/null || \
+      echo "⚠️  Failed to install reattach-to-user-namespace"
+  else
+    echo "  → Already installed"
+  fi
 fi
 
-echo "Plugins setup complete! Run 'source ~/.zshrc' to apply changes."
-chmod +x "$0"
+echo "✅ Plugins setup complete!"

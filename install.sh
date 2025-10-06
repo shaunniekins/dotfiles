@@ -1,5 +1,14 @@
 #!/bin/sh
-# Script install packages requirements, oh-my-zsh, config files (with symlinks), font and Colors
+# ============================================================================
+# DOTFILES INSTALLATION SCRIPT
+# ============================================================================
+# This script installs and configures:
+# - Package requirements (neovim, tmux, zsh, etc.)
+# - Oh-my-zsh with plugins
+# - Pure prompt
+# - Configuration files via symlinks
+# - skhd and Aerospace (macOS only)
+# ============================================================================
 
 DOTFILES=$HOME/.dotfiles
 BACKUP_DIR=$HOME/dotfiles-backup
@@ -187,12 +196,13 @@ create_symlink() {
 create_symlink $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 create_symlink $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 
-# Create symlinks for tmux
+# Create symlinks for skhd
+create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
+
+# Create symlink for tmux configuration
 create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 create_symlink $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 
-# Create symlinks for skhd
-create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
 
 # Create symlink for Aerospace on macOS
 if uname -s | grep Darwin; then
@@ -204,36 +214,22 @@ chsh -s /bin/zsh
 
 # Restart services to apply new configs on macOS
 if uname -s | grep Darwin; then
+    echo "================================================="
+    echo "Starting macOS services..."
+    echo "================================================="
+    
+    # Restart skhd service
     skhd --restart-service
-    # Start Aerospace if installed
-    if command -v aerospace &>/dev/null; then
-        killall aerospace 2>/dev/null || true
-        aerospace &
-    fi
-    source ~/.zshrc
-    source ~/.zprofile
-    source ~/.tmux.conf
-    source ~/.tmux.conf.local
-    source ~/.skhdrc
-fi
-
-# Setup tmux plugin manager if not already installed
-if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    echo "Installing Tmux Plugin Manager..."
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
-
-# Refresh configuration 
-echo "================================================="
-echo "Refreshing configuration..."
-echo "================================================="
-if [ -f "$HOME/.zshrc" ]; then
-    echo "Sourcing .zshrc to apply changes immediately"
-    # Source zshrc if possible, otherwise prompt user to restart shell
-    if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
-        source "$HOME/.zshrc" 2>/dev/null || echo "Please restart your terminal or run 'source ~/.zshrc' to apply changes"
+    echo "✓ skhd restarted"
+    
+    # Start Aerospace application
+    if [ -d "/Applications/AeroSpace.app" ]; then
+        echo "Starting Aerospace..."
+        open -a AeroSpace
+        echo "✓ Aerospace started"
     else
-        echo "Please restart your terminal or switch to zsh and run 'source ~/.zshrc' to apply changes"
+        echo "⚠️  Aerospace app not found in /Applications"
+        echo "   You may need to start it manually: open -a AeroSpace"
     fi
 fi
 

@@ -1,132 +1,104 @@
-# Window/Tab Navigation:
-# - Switch to next window: Ctrl+b then n
-# - Switch to previous window: Ctrl+b then p
-# - Switch to specific window: Ctrl+b then [window number]
-# - Switch to last window: Ctrl+b then ^
-# - List all windows: Ctrl+b then w
+# ============================================================================
+# TMUX CONFIGURATION
+# ============================================================================
+# Navigation Quick Reference:
+# - Window switching: prefix + n (next) | p (prev) | [number] | ^ (last)
+# - List windows: prefix + w
+# - Rename window: prefix + ,
+# - Rename session: prefix + $
+# - Pane switching: prefix + h/j/k/l (vim-style)
+# 
+# Plugin Management (prefix = Ctrl+b):
+# - Install plugins: prefix + I
+# - Update plugins: prefix + U  
+# - Uninstall plugins: prefix + alt + u
+# ============================================================================
 
-# Renaming:
-# - Rename current window: Ctrl+b then , (comma)
-# - Rename session: Ctrl+b then $
-
-# Plugin Management Instructions:
-# - The prefix key is Ctrl+b
-# 1. Install all plugins: Press prefix + I (capital i) - that's Ctrl+b then I
-# 2. Update plugins: Press prefix + U - that's Ctrl+b then U
-# 3. Remove/uninstall plugins not in the list: Press prefix + alt + u - that's Ctrl+b then alt+u
-
-# List of plugins
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'vaaleyard/tmux-dotbar'
-
-# Tmux Resurrect & Continuum settings
-set -g @continuum-restore 'on'
-set -g @continuum-save-interval '15'
-set -g @resurrect-strategy-nvim 'session'
-
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+set -g default-terminal "screen-256color"
 set -ga terminal-overrides ",screen-256color*:Tc"
-set-option -g default-terminal "screen-256color"
 set -s escape-time 0
-
-# unbind C-b
-# set-option -g prefix C-a
-bind-key C-a send-prefix
-set -g status-style 'bg=#333333 fg=#5eacd3'
-
-# Customize status bar
-# set -g status-left-length 1000
-# set -g status-left "$status_left"
-# set -g status-right-length 1000
-# set -g status-right "$status_right"
-
-bind r source-file ~/.tmux.conf
-set -g base-index 1
-
-# Enable mouse support
 set -g mouse on
-
+set -g base-index 1
+setw -g pane-base-index 1
+set-option -g renumber-windows on
 set-window-option -g mode-keys vi
-bind -T copy-mode-vi v send-keys -X begin-selection
 
-# Copy to clipboard - cross-platform
-if-shell "uname | grep -q Darwin" \
-    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'pbcopy'" \
-    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'"
+# ============================================================================
+# KEY BINDINGS
+# ============================================================================
+# Prefix configuration (default: Ctrl+b)
+bind-key C-a send-prefix
 
-# vim-like pane switching
+# Reload configuration
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# Pane splitting
+unbind %
+bind h split-window -h -c "#{pane_current_path}"
+bind v split-window -v -c "#{pane_current_path}"
+
+# Vim-style pane switching
 bind -r ^ last-window
 bind -r k select-pane -U
 bind -r j select-pane -D
 bind -r h select-pane -L
 bind -r l select-pane -R
 
+# Copy mode bindings
+bind -T copy-mode-vi v send-keys -X begin-selection
+
+# Platform-specific clipboard integration
+if-shell "uname | grep -q Darwin" \
+    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'pbcopy'" \
+    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'"
+
+# ============================================================================
+# CUSTOM SHORTCUTS
+# ============================================================================
 bind -r D neww -c "#{pane_current_path}" "[[ -e TODO.md ]] && nvim TODO.md || nvim ~/.dotfiles/personal/todo.md"
-
-# forget the find window.  That is for chumps
 bind-key -r f run-shell "tmux neww ~/.local/bin/tmux-sessionizer"
-
 bind-key -r i run-shell "tmux neww tmux-cht.sh"
+
+# Project shortcuts
 bind-key -r G run-shell "~/.local/bin/tmux-sessionizer ~/work/rnrdp"
 bind-key -r C run-shell "~/.local/bin/tmux-sessionizer ~/work/tvui"
 bind-key -r R run-shell "~/.local/bin/tmux-sessionizer ~/work/milo"
-# bind-key -r L run-shell "~/.local/bin/tmux-sessionizer ~/work/hpack"
 bind-key -r H run-shell "~/.local/bin/tmux-sessionizer ~/personal/vim-with-me"
 bind-key -r T run-shell "~/.local/bin/tmux-sessionizer ~/personal/refactoring.nvim"
 bind-key -r N run-shell "~/.local/bin/tmux-sessionizer ~/personal/harpoon"
 bind-key -r S run-shell "~/.local/bin/tmux-sessionizer ~/personal/developer-productivity"
 
-# Pane splitting
-unbind % # Remove default binding for vertical split
-bind h split-window -h # Set 'h' to split vertically (creating panes side by side)
+# ============================================================================
+# PLUGINS
+# ============================================================================
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'vaaleyard/tmux-dotbar'
 
-### STATUS BAR ###
-set -g status-style "bg=#2e3440,fg=#d8dee9"
-set -g status-left "#[bg=#8f00ff,fg=#2e3440]  #{session_name}  #[bg=#005f87,fg=#8f00ff]#[bg=#005f87,fg=#d8dee9]#{?client_prefix, PREFIX ,}#[bg=#2e3440,fg=#005f87]"
-set -g status-left-length 500
-set -g window-status-format "#[bg=#2e3440] #{window_index}-#{window_name} #{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440 fg=#2e3440],}"
-set -g window-status-current-format "#[bg=#88c0d0,fg=#2e3440]#[fg=#2e3440] #{window_index}-#{window_name} #[bg=#2e3440,fg=#88c0d0]#{?#{==:#{window_index},#{last_window_index}},#[bg=#2e3440],}"
-set -g window-status-separator ""
-set -g status-right "#[bg=#2e3440,fg=#88c0d0] #[bg=#88c0d0,fg=#2e3440] #(whoami) \
-#[bg=#88c0d0,fg=#00ff9c]#[bg=#00ff9c,fg=#2e3440] #(date +%a-%b-%d) #[fg=#8f00ff]#[bg=#8f00ff,fg=#2e3440] #(date +%H:%M) "
-set -g status-right-length 500
-set -g status-interval 1
+# ============================================================================
+# PLUGIN CONFIGURATION
+# ============================================================================
+# Tmux Resurrect & Continuum
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+set -g @resurrect-strategy-nvim 'session'
 
-### PANES ###
-set -g pane-base-index 1
-set -g pane-border-format "#{?pane_active,\
-╡#[fg=#2e3440 bg=#00ff9c]  #{pane_index}-#{pane_current_command}  #[fg=#00ff9c bg=default]╞,\
-╡#[fg=#00ff9c bg=default]  #{pane_index}-#{pane_current_command}  #[fg=#00ff9c]╞}"
-set -g pane-border-lines double
-set -g pane-border-status 'top'
-set -g pane-border-style fg=#00ff9c
-set -g pane-active-border-style fg=#00ff9c
-
-# Comments
-# set -g status-right "#(pwd) #[fg=#2e3440]#[bg=#2e3440,fg=#88c0d0] #(whoami) #[bg=#88c0d0,fg=#2e3440] #{host_short} \
-
+# Tmux Dotbar Theme
 set -g @tmux-dotbar-bg "#1e1e2e"
 set -g @tmux-dotbar-fg "#585b70"
-# set -g @tmux-dotbar-fg-current "#cdd6f4"
 set -g @tmux-dotbar-fg-current "#008000"
 set -g @tmux-dotbar-fg-session "#9399b2"
 set -g @tmux-dotbar-fg-prefix "#cba6f7"
 set -g @tmux-dotbar-position "bottom"
 set -g @tmux-dotbar-justify "absolute-centre"
-# set -g @tmux-dotbar-left "true"
-# set -g @tmux-dotbar-status-left "#S" # see code
 set -g @tmux-dotbar-right "true"
-# set -g @tmux-dotbar-status-right "%H:%M" # see code
-# set -g @tmux-dotbar-window-status-format " #W "
-# set -g @tmux-dotbar-window-status-separator " • "
-# set -g @tmux-dotbar-maximized-icon "󰊓"
-# set -g @tmux-dotbar-show-maximized-icon-for-all-tabs false
 
-set-option -g renumber-windows on
-set -g base-index 1
-setw -g pane-base-index 1
-
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+# ============================================================================
+# INITIALIZE TPM (Keep at bottom)
+# ============================================================================
 run '~/.tmux/plugins/tpm/tpm'
