@@ -123,12 +123,30 @@ set -g @resurrect-strategy-nvim 'session'
 set -g @yank_selection 'clipboard'
 set -g @yank_selection_mouse 'clipboard'
 
-# Tmux Dotbar Theme
+### Tmux Dotbar Theme ###
+
+# Background of the status bar
 set -g @tmux-dotbar-bg "#1e1e2e"
-set -g @tmux-dotbar-fg "#585b70"
-set -g @tmux-dotbar-fg-current "#008000"
+
+# Inactive window text (not working: using the override)
+# set -g @tmux-dotbar-fg "#008000"
+
+# Current/Active window node color
+set -g @tmux-dotbar-fg-current "#1591EA"
+
+# Session node on the far left
 set -g @tmux-dotbar-fg-session "#9399b2"
+
+# Background color of the session node when tmux prefix is pressed
 set -g @tmux-dotbar-fg-prefix "#cba6f7"
+
+# OVERRIDE: Fix for the "Last Window" node which defaults to blue in some themes
+set -g window-status-last-style "fg=#9399b2"
+
+# OVERRIDE: Change the "Config Reloaded" message colors
+set -g message-style "fg=#1e1e2e,bg=#1591EA,bold"
+set -g message-command-style "fg=#1e1e2e,bg=#1591EA,bold"
+
 set -g @tmux-dotbar-position "bottom"
 set -g @tmux-dotbar-justify "absolute-centre"
 set -g @tmux-dotbar-right "true"
