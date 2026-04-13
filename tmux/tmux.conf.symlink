@@ -85,7 +85,8 @@ bind -r l select-pane -R
 #   4. Cmd+V → paste anywhere (system clipboard)
 #   5. prefix + ] → paste from tmux buffer
 bind -T copy-mode-vi v send-keys -X begin-selection
-
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
 # ============================================================================
 # CUSTOM SHORTCUTS
 # ============================================================================
@@ -149,7 +150,9 @@ set -g message-command-style "fg=#1e1e2e,bg=#1591EA,bold"
 
 set -g @tmux-dotbar-position "bottom"
 set -g @tmux-dotbar-justify "absolute-centre"
-set -g @tmux-dotbar-right "true"
+set -g @tmux-dotbar-right "false"
+set -g @tmux-dotbar-left "false"
+
 
 # ============================================================================
 # INITIALIZE TPM (Keep at bottom)
