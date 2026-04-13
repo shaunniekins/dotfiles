@@ -16,7 +16,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin"
 # TMUX AUTO-START (MUST BE BEFORE OH-MY-ZSH SOURCING)
 # ============================================================================
 # Always start tmux for interactive shells
-if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -z "$INSIDE_EMACS" ] && [ -z "$VSCODE_INJECTION" ]; then
+if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -z "$INSIDE_EMACS" ]; then
     # Ensure tmux configuration is properly linked
     if [ ! -f ~/.tmux.conf ]; then
         ln -sf ~/.dotfiles/tmux/tmux.conf.symlink ~/.tmux.conf
@@ -46,7 +46,7 @@ prompt pure
 # ============================================================================
 # TERMINAL CONFIGURATION
 # ============================================================================
-export TERM=xterm-256color
+# export TERM=xterm-256color
 
 
 # ============================================================================
@@ -106,3 +106,39 @@ fi
 # Bun completions
 [ -s "/Users/shaunniekins/.bun/_bun" ] && source "/Users/shaunniekins/.bun/_bun"
 
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+export PATH="$PATH:/Users/shaunniekins/flutter/bin"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/shaunniekins/.antigravity/antigravity/bin:$PATH"

@@ -1,123 +1,120 @@
-# 🚀 Dotfiles Configuration# dotfiles : zsh, vim configured in a proper way
+# 🚀 Dotfiles
 
-A clean, organized dotfiles setup with automatic tmux session management, Pure prompt, and comprehensive tool integration.## Getting Started
+A clean, organized dotfiles setup with automatic tmux session management, Pure prompt, and comprehensive tool integration.
 
-## ✨ Features### Prerequisite
+## ✨ Features
 
-- **🖥️ Automatic tmux sessions** - Every terminal automatically starts in tmuxThe install script backs up existing configuration files, but please read below before running it!
-
-- **🎨 Pure prompt** - Minimal, fast zsh promptRequirements:
-
-- **⚡ Oh-My-Zsh** - Powerful zsh framework with useful plugins
-
-- **🪟 Window Management** - Aerospace and skhd for macOS* git
-
-- **💾 Session Persistence** - tmux-resurrect and tmux-continuum* brew (on MacOS)
-
-- **🎯 Organized Configuration** - Clean, well-commented config files* zsh 5.0.5 minimum (otherwise some themes may not display colors correctly)
-
-- Tested on MacOS/Ubuntu/Debian/Centos
+- **🖥️ Automatic tmux sessions** — Every terminal automatically starts in tmux
+- **🎨 Pure prompt** — Minimal, fast zsh prompt
+- **⚡ Oh-My-Zsh** — Powerful zsh framework with useful plugins
+- **🪟 Window Management** — Aerospace and skhd for macOS
+- **💾 Session Persistence** — tmux-resurrect and tmux-continuum
+- **🎯 Organized Configuration** — Clean, well-commented config files
 
 ## 📋 Prerequisites
 
-### Install
-
 - macOS (tested) or Linux
+- Git
+- Homebrew (for macOS)
+- Curl
+- zsh 5.0.5+ (otherwise some themes may not display colors correctly)
 
-- Git```bash
+## 🛠️ Installation
 
-- Homebrew (for macOS)git clone <https://github.com/shaunniekins/dotfiles> ~/.dotfiles
-
-- Curlcd ~/.dotfiles
-
-./install.sh
-
-## 🛠️ Installation```
-
-```bash### Terminal configuration: color & fonts
-
+```bash
 # Clone the repository
-
-git clone https://github.com/shaunniekins/dotfiles.git ~/.dotfiles* Fonts used "DejaVu Sans Mono for Powerline.ttf" and "Inconsolata for Powerline.otf" are in terminal/fonts folder
-
-* Colors used "FrontEndDelight" are in terminal/colors folder (iterm2) for more colors or other terminal support, check: <https://github.com/mbadolato/iTerm2-Color-Schemes>
+git clone https://github.com/shaunniekins/dotfiles.git ~/.dotfiles
 
 # Run installation script
-
-cd ~/.dotfiles## About install.sh
-
+cd ~/.dotfiles
 chmod +x install.sh
-
-./install.shThe repo contains all configuration I use with  zsh, and skhd.
-
+./install.sh
 ```
-
-The install script does the following:
 
 The installation script will:
 
-1. Backup existing configuration files* Install required packages depending on OS (zsh/oh-my-zsh/neovim)
-
-2. Install required packages* Install zsh plugins (zsh-syntax-highlighting)
-
-3. Install Oh-My-Zsh and plugins* Set up Pure prompt
-
-4. Setup Pure prompt* Symlink .zshrc, .skhdrc and other configuration files
-
+1. Backup existing configuration files
+2. Install required packages (neovim, tmux, zsh, etc.)
+3. Install Oh-My-Zsh and plugins (zsh-syntax-highlighting)
+4. Setup Pure prompt
 5. Create symlinks for all config files
+6. Configure tmux to auto-start
+7. Start macOS services (skhd, Aerospace)
 
-6. Configure tmux to auto-start## zsh with Pure prompt
+### Install TPM (if not already installed)
 
-## 📁 StructurePure is a minimal and fast ZSH prompt. For more info: <https://github.com/sindresorhus/pure>
-
-```## skhd
-
-.dotfiles/
-
-├── install.sh                 # Main installation scriptSkhd for keyboard shortcuts.
-
-├── zsh/
-
-│   ├── zshrc.symlink         # Main zsh configuration* skhd: <https://github.com/koekeishiya/skhd>
-
-│   ├── setup_plugins.sh      # Plugin installation script
-
-│   └── setup_pure.sh         # Pure prompt setup## To do
-
-├── tmux/
-
-│   └── tmux.conf.symlink     # Tmux configuration* Add screenshots
-
-├── skhd/
-
-│   └── skhdrc.symlink        # Keyboard shortcuts (macOS)Install TPM (if not already installed):
-
-└── aerospace/
-
-    └── aerospace.toml        # Window manager config (macOS)```bash
-
-```git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
-## 🎯 Key Features Explained
+Then press `prefix + I` inside tmux to install plugins.
 
-### Automatic tmux Sessions
+## 📁 Structure
 
-Every new terminal automatically starts tmux and attaches to the `main` session. This ensures:
+```
+.dotfiles/
+├── install.sh                          # Main installation script
+├── zsh/
+│   ├── zshrc.symlink                  # Main zsh configuration
+│   ├── zprofile.symlink               # Zsh profile
+│   ├── setup_plugins.sh               # Plugin installation script
+│   └── setup_pure.sh                  # Pure prompt setup
+├── tmux/
+│   ├── tmux.conf.symlink              # Base tmux config (do not edit)
+│   └── tmux.conf.local.symlink        # Your tmux customizations
+├── skhd/
+│   └── skhdrc.symlink                 # Keyboard shortcuts (macOS)
+└── aerospace/
+    └── aerospace.toml                 # Window manager config (macOS)
+```
 
-- Persistent sessions across terminal closes
-- Consistent working environment
-- Session recovery after system restarts
+## 🔄 Updating
 
-### Configuration Organization
+### After pulling changes from git
 
-All configuration files are organized by category and use clear section headers:
+```bash
+cd ~/.dotfiles
+git pull
+```
 
-- Path configurations
-- Plugin settings
-- Key bindings
-- External integrations
+You do **not** need to re-run `install.sh` every time. Instead, reload only the component you changed:
+
+### Reload zsh config
+
+```bash
+source ~/.zshrc
+```
+
+### Reload tmux config
+
+From **inside tmux**, press `prefix + r` or run:
+
+```bash
+tmux source ~/.tmux.conf
+```
+
+> **Note:** If you changed `default-terminal` or other server-level settings, you need a full restart:
+>
+> ```bash
+> tmux kill-server
+> ```
+>
+> Then reopen your terminal (tmux will auto-start).
+
+### Reload skhd
+
+```bash
+skhd --restart-service
+```
+
+### When to re-run install.sh
+
+Only re-run `install.sh` if you need to:
+
+- Install new system packages
+- Reinstall Oh-My-Zsh or plugins
+- Recreate symlinks (e.g. after moving the dotfiles directory)
+- Set up on a new machine
 
 ## ⌨️ Key Bindings
 
@@ -125,30 +122,53 @@ All configuration files are organized by category and use clear section headers:
 
 **Window Management:**
 
-- `prefix + n` - Next window
-- `prefix + p` - Previous window
-- `prefix + [0-9]` - Switch to window number
-- `prefix + ,` - Rename window
-- `prefix + w` - List windows
+| Shortcut         | Action                  |
+| ---------------- | ----------------------- |
+| `prefix + n`     | Next window             |
+| `prefix + p`     | Previous window         |
+| `prefix + [0-9]` | Switch to window number |
+| `prefix + ,`     | Rename window           |
+| `prefix + w`     | List windows            |
 
 **Pane Management:**
 
-- `prefix + h` - Split horizontally
-- `prefix + v` - Split vertically
-- `prefix + h/j/k/l` - Navigate panes (vim-style)
+| Shortcut         | Action                     |
+| ---------------- | -------------------------- |
+| `prefix + h`     | Split horizontally         |
+| `prefix + v`     | Split vertically           |
+| `prefix + k/j/l` | Navigate panes (vim-style) |
+| `prefix + ^`     | Last window                |
+
+**Copy Mode:**
+
+| Shortcut     | Action                           |
+| ------------ | -------------------------------- |
+| `prefix + [` | Enter copy mode                  |
+| `v`          | Begin selection (in copy mode)   |
+| `y`          | Yank to clipboard (in copy mode) |
+| `prefix + ]` | Paste from tmux buffer           |
+| `Cmd + V`    | Paste from system clipboard      |
 
 **Plugin Management:**
 
-- `prefix + I` - Install plugins
-- `prefix + U` - Update plugins
-- `prefix + alt + u` - Uninstall removed plugins
+| Shortcut           | Action                    |
+| ------------------ | ------------------------- |
+| `prefix + I`       | Install plugins           |
+| `prefix + U`       | Update plugins            |
+| `prefix + alt + u` | Uninstall removed plugins |
 
 ### Zsh
 
-- `Ctrl + R` - Reverse history search
-- `Tab` - Auto-completion menu
+| Shortcut   | Action                 |
+| ---------- | ---------------------- |
+| `Ctrl + R` | Reverse history search |
+| `Tab`      | Auto-completion menu   |
 
 ## 🔧 Customization
+
+### Tmux Configuration
+
+Edit `tmux/tmux.conf.local.symlink` for your tmux customizations. **Do not edit** `tmux/tmux.conf.symlink` — that is the base config from [gpakosz/.tmux](https://github.com/gpakosz/.tmux).
 
 ### Adding New Plugins
 
@@ -163,31 +183,15 @@ plugins=(
 )
 ```
 
-### Changing tmux Theme
-
-Edit `tmux/tmux.conf.symlink` in the "PLUGIN CONFIGURATION" section.
-
 ### Modifying Path
 
 Edit `zsh/zshrc.symlink` in the "PATH CONFIGURATION" or "ADDITIONAL PATH CONFIGURATIONS" sections.
 
-## 🔄 Updating
+### Terminal Configuration
 
-```bash
-cd ~/.dotfiles
-git pull
-./install.sh  # Re-run if needed
-```
+Fonts: "DejaVu Sans Mono for Powerline.ttf" and "Inconsolata for Powerline.otf" are in `terminal/fonts` folder.
 
-To reload configurations without re-running the installer:
-
-```bash
-# Reload zsh
-source ~/.zshrc
-
-# Reload tmux (inside tmux)
-tmux source ~/.tmux.conf
-```
+Colors: "FrontEndDelight" are in `terminal/colors` folder (iTerm2). For more colors or other terminal support, check: [iTerm2-Color-Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes)
 
 ## 🐛 Troubleshooting
 
@@ -204,6 +208,34 @@ Verify the symlink exists:
 ```bash
 ls -la ~/.tmux.conf
 ```
+
+### Garbage text in tmux panes
+
+If you see text like `10;rgb:e6e6/eded/f3f3...` in panes, ensure `tmux.conf.local.symlink` has:
+
+```bash
+set -g default-terminal "tmux-256color"
+set -g allow-passthrough off
+set -g set-clipboard on
+```
+
+Then fully restart tmux:
+
+```bash
+tmux kill-server
+```
+
+### Copy/paste not working in tmux
+
+1. Make sure `tmux-yank` plugin is installed: `prefix + I`
+2. Verify clipboard settings in `tmux.conf.local.symlink`:
+
+   ```bash
+   set -g set-clipboard on
+   set -g @yank_selection 'clipboard'
+   ```
+
+3. Use `prefix + [` to enter copy mode, `v` to select, `y` to yank
 
 ### Plugins not working
 
@@ -231,25 +263,18 @@ source ~/.zshrc
 
 ## 📦 Included Packages
 
-- **neovim** - Modern vim
-- **tmux** - Terminal multiplexer
-- **zsh** - Advanced shell
-- **tree** - Directory viewer
-- **wget/curl** - File downloaders
-- **skhd** - Hotkey daemon (macOS)
-- **aerospace** - Window manager (macOS)
-
-## 🤝 Contributing
-
-Feel free to fork and customize for your needs!
-
-## 📝 License
-
-MIT
+- **neovim** — Modern vim
+- **tmux** — Terminal multiplexer
+- **zsh** — Advanced shell
+- **tree** — Directory viewer
+- **wget/curl** — File downloaders
+- **skhd** — Hotkey daemon (macOS)
+- **aerospace** — Window manager (macOS)
 
 ## 🙏 Credits
 
 - [Oh-My-Zsh](https://ohmyz.sh/)
 - [Pure Prompt](https://github.com/sindresorhus/pure)
 - [tmux](https://github.com/tmux/tmux)
+- [gpakosz/.tmux](https://github.com/gpakosz/.tmux)
 - [Aerospace](https://github.com/nikitabobko/AeroSpace)

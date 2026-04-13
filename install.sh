@@ -197,7 +197,7 @@ create_symlink $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 create_symlink $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 
 # Create symlinks for skhd
-create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
+# create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
 
 # Create symlink for tmux configuration
 create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf

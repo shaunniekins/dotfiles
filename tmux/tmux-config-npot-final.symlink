@@ -1,0 +1,104 @@
+# ============================================================================
+# TMUX CONFIGURATION
+# ============================================================================
+# Navigation Quick Reference:
+# - Window switching: prefix + n (next) | p (prev) | [number] | ^ (last)
+# - List windows: prefix + w
+# - Rename window: prefix + ,
+# - Rename session: prefix + $
+# - Pane switching: prefix + h/j/k/l (vim-style)
+# 
+# Plugin Management (prefix = Ctrl+b):
+# - Install plugins: prefix + I
+# - Update plugins: prefix + U  
+# - Uninstall plugins: prefix + alt + u
+# ============================================================================
+
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+set -g default-terminal "screen-256color"
+set -ga terminal-overrides ",screen-256color*:Tc"
+set -s escape-time 0
+set -g mouse on
+set -g base-index 1
+setw -g pane-base-index 1
+set-option -g renumber-windows on
+set-window-option -g mode-keys vi
+
+# ============================================================================
+# KEY BINDINGS
+# ============================================================================
+# Prefix configuration (default: Ctrl+b)
+bind-key C-a send-prefix
+
+# Reload configuration
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# Pane splitting
+unbind %
+bind h split-window -h -c "#{pane_current_path}"
+bind v split-window -v -c "#{pane_current_path}"
+
+# Vim-style pane switching
+bind -r ^ last-window
+bind -r k select-pane -U
+bind -r j select-pane -D
+# bind -r h select-pane -L
+bind -r l select-pane -R
+
+# Copy mode bindings
+bind -T copy-mode-vi v send-keys -X begin-selection
+
+# Platform-specific clipboard integration
+if-shell "uname | grep -q Darwin" \
+    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'pbcopy'" \
+    "bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'"
+
+# ============================================================================
+# CUSTOM SHORTCUTS
+# ============================================================================
+bind -r D neww -c "#{pane_current_path}" "[[ -e TODO.md ]] && nvim TODO.md || nvim ~/.dotfiles/personal/todo.md"
+bind-key -r f run-shell "tmux neww ~/.local/bin/tmux-sessionizer"
+bind-key -r i run-shell "tmux neww tmux-cht.sh"
+
+# Project shortcuts
+bind-key -r G run-shell "~/.local/bin/tmux-sessionizer ~/work/rnrdp"
+bind-key -r C run-shell "~/.local/bin/tmux-sessionizer ~/work/tvui"
+bind-key -r R run-shell "~/.local/bin/tmux-sessionizer ~/work/milo"
+bind-key -r H run-shell "~/.local/bin/tmux-sessionizer ~/personal/vim-with-me"
+bind-key -r T run-shell "~/.local/bin/tmux-sessionizer ~/personal/refactoring.nvim"
+bind-key -r N run-shell "~/.local/bin/tmux-sessionizer ~/personal/harpoon"
+bind-key -r S run-shell "~/.local/bin/tmux-sessionizer ~/personal/developer-productivity"
+
+# ============================================================================
+# PLUGINS
+# ============================================================================
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'vaaleyard/tmux-dotbar'
+
+# ============================================================================
+# PLUGIN CONFIGURATION
+# ============================================================================
+# Tmux Resurrect & Continuum
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+set -g @resurrect-strategy-nvim 'session'
+
+# Tmux Dotbar Theme
+set -g @tmux-dotbar-bg "#1e1e2e"
+set -g @tmux-dotbar-fg "#585b70"
+set -g @tmux-dotbar-fg-current "#008000"
+set -g @tmux-dotbar-fg-session "#9399b2"
+set -g @tmux-dotbar-fg-prefix "#cba6f7"
+set -g @tmux-dotbar-position "bottom"
+set -g @tmux-dotbar-justify "absolute-centre"
+set -g @tmux-dotbar-right "true"
+
+# ============================================================================
+# INITIALIZE TPM (Keep at bottom)
+# ============================================================================
+run '~/.tmux/plugins/tpm/tpm'

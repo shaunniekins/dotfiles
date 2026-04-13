@@ -1,0 +1,139 @@
+# ============================================================================
+# TMUX LOCAL CONFIGURATION (overrides ~/.tmux.conf)
+# ============================================================================
+# Navigation Quick Reference:
+# - Window switching: prefix + n (next) | p (prev) | [number] | ^ (last)
+# - List windows: prefix + w
+# - Rename window: prefix + ,
+# - Rename session: prefix + $
+# - Pane switching: prefix + h/j/k/l (vim-style)
+# 
+# Plugin Management (prefix = Ctrl+b):
+# - Install plugins: prefix + I
+# - Update plugins: prefix + U  
+# - Uninstall plugins: prefix + alt + u
+# ============================================================================
+
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+# Use tmux-256color instead of screen-256color.
+# This properly advertises true color and OSC support, preventing
+# escape sequence responses (e.g. color queries) from leaking as
+# garbage text like "10;rgb:e6e6/eded/f3f3..." in unfocused panes.
+set -g default-terminal "tmux-256color"
+
+# Tell tmux that the *real* terminal outside supports true color (RGB)
+# and that it should handle OSC clipboard sequences (Ms) via pbcopy.
+set -ga terminal-overrides ",xterm-256color*:Tc"
+set -ga terminal-overrides ",alacritty*:Tc"
+set -ga terminal-overrides ",*-256color*:Tc"
+
+# Prevent rogue escape sequences from passing through to the terminal.
+# This stops OSC color query responses from appearing as visible text.
+set -g allow-passthrough off
+
+# Enable tmux's built-in OSC 52 clipboard integration.
+# When you yank text in copy mode, tmux will use the OSC 52 escape
+# sequence to set the system clipboard directly through the terminal.
+# This works with iTerm2, Terminal.app, Alacritty, and most modern terminals.
+set -g set-clipboard on
+
+# Set escape-time to 50ms (instead of 0).
+# A value of 0 prevents tmux from properly intercepting multi-byte escape sequences 
+# (like OSC 10/11 color query responses from the terminal), causing them to leak as garbage text.
+# 50ms is still fast enough to not be noticeable in Vim.
+set -s escape-time 50
+set -g mouse on
+set -g base-index 1
+setw -g pane-base-index 1
+set-option -g renumber-windows on
+set-window-option -g mode-keys vi
+
+# ============================================================================
+# KEY BINDINGS
+# ============================================================================
+# Prefix configuration (default: Ctrl+b)
+bind-key C-a send-prefix
+
+# Reload configuration
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# Pane splitting
+unbind %
+bind h split-window -h -c "#{pane_current_path}"
+bind v split-window -v -c "#{pane_current_path}"
+
+# Vim-style pane switching
+bind -r ^ last-window
+bind -r k select-pane -U
+bind -r j select-pane -D
+# bind -r h select-pane -L
+bind -r l select-pane -R
+
+# ============================================================================
+# COPY MODE BINDINGS
+# ============================================================================
+# Enter copy mode with vi-style keys.
+# The tmux-yank plugin handles the actual yank-to-clipboard logic.
+# set-clipboard (above) provides native OSC 52 clipboard as a fallback.
+#
+# Usage:
+#   1. prefix + [ → enter copy mode
+#   2. v → begin selection (vim-style)
+#   3. y → yank to clipboard (handled by tmux-yank)
+#   4. Cmd+V → paste anywhere (system clipboard)
+#   5. prefix + ] → paste from tmux buffer
+bind -T copy-mode-vi v send-keys -X begin-selection
+
+# ============================================================================
+# CUSTOM SHORTCUTS
+# ============================================================================
+bind -r D neww -c "#{pane_current_path}" "[[ -e TODO.md ]] && nvim TODO.md || nvim ~/.dotfiles/personal/todo.md"
+bind-key -r f run-shell "tmux neww ~/.local/bin/tmux-sessionizer"
+bind-key -r i run-shell "tmux neww tmux-cht.sh"
+
+# Project shortcuts
+bind-key -r G run-shell "~/.local/bin/tmux-sessionizer ~/work/rnrdp"
+bind-key -r C run-shell "~/.local/bin/tmux-sessionizer ~/work/tvui"
+bind-key -r R run-shell "~/.local/bin/tmux-sessionizer ~/work/milo"
+bind-key -r H run-shell "~/.local/bin/tmux-sessionizer ~/personal/vim-with-me"
+bind-key -r T run-shell "~/.local/bin/tmux-sessionizer ~/personal/refactoring.nvim"
+bind-key -r N run-shell "~/.local/bin/tmux-sessionizer ~/personal/harpoon"
+bind-key -r S run-shell "~/.local/bin/tmux-sessionizer ~/personal/developer-productivity"
+
+# ============================================================================
+# PLUGINS
+# ============================================================================
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'vaaleyard/tmux-dotbar'
+
+# ============================================================================
+# PLUGIN CONFIGURATION
+# ============================================================================
+# Tmux Resurrect & Continuum
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+set -g @resurrect-strategy-nvim 'session'
+
+# Tmux Yank — use system clipboard
+set -g @yank_selection 'clipboard'
+set -g @yank_selection_mouse 'clipboard'
+
+# Tmux Dotbar Theme
+set -g @tmux-dotbar-bg "#1e1e2e"
+set -g @tmux-dotbar-fg "#585b70"
+set -g @tmux-dotbar-fg-current "#008000"
+set -g @tmux-dotbar-fg-session "#9399b2"
+set -g @tmux-dotbar-fg-prefix "#cba6f7"
+set -g @tmux-dotbar-position "bottom"
+set -g @tmux-dotbar-justify "absolute-centre"
+set -g @tmux-dotbar-right "true"
+
+# ============================================================================
+# INITIALIZE TPM (Keep at bottom)
+# ============================================================================
+run '~/.tmux/plugins/tpm/tpm'
