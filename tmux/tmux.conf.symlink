@@ -75,18 +75,28 @@ bind -r l select-pane -R
 # COPY MODE BINDINGS
 # ============================================================================
 # Enter copy mode with vi-style keys.
-# The tmux-yank plugin handles the actual yank-to-clipboard logic.
-# set-clipboard (above) provides native OSC 52 clipboard as a fallback.
 #
-# Usage:
+# Keyboard:
 #   1. prefix + [ → enter copy mode
 #   2. v → begin selection (vim-style)
-#   3. y → yank to clipboard (handled by tmux-yank)
-#   4. Cmd+V → paste anywhere (system clipboard)
-#   5. prefix + ] → paste from tmux buffer
+#   3. y → copy to system clipboard and exit
+#   Escape → leave copy mode
+#
+# Mouse (mouse mode is on, so tmux owns the mouse):
+#   drag           → copies to system clipboard on release
+#   double-click   → copy word
+#   triple-click   → copy line
+#
+# Paste:
+#   Cmd+V          → terminal types the system clipboard into the pane
+#   prefix + C-v   → paste the system clipboard via tmux
+#   prefix + ]     → paste tmux's own buffer
 bind -T copy-mode-vi v send-keys -X begin-selection
-bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# NOTE: y and MouseDragEnd1Pane are bound in the CLIPBOARD section at the very
+# bottom of this file, after TPM. Binding them here does not work — tmux-yank
+# loads later and overwrites anything set before `run tpm`.
+
 # ============================================================================
 # CUSTOM SHORTCUTS
 # ============================================================================
@@ -107,17 +117,34 @@ bind-key -r S run-shell "~/.local/bin/tmux-sessionizer ~/personal/developer-prod
 # PLUGINS
 # ============================================================================
 set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+# ORDER MATTERS: tmux-dotbar must load BEFORE tmux-continuum.
+# TPM sources plugins in the order listed here. tmux-continuum implements its
+# periodic autosave by appending a "#(continuum_save.sh)" interpolation to
+# status-right, which tmux then re-evaluates every `status-interval` seconds.
+# tmux-dotbar unconditionally overwrites status-right, so if dotbar loads last
+# it wipes that hook and autosaving silently stops forever — leaving nothing
+# for tmux-resurrect to restore after a reboot.
+set -g @plugin 'vaaleyard/tmux-dotbar'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'vaaleyard/tmux-dotbar'
 
 # ============================================================================
 # PLUGIN CONFIGURATION
 # ============================================================================
 # Tmux Resurrect & Continuum
+# Restore the last saved environment automatically when the tmux server starts.
 set -g @continuum-restore 'on'
-set -g @continuum-save-interval '15'
+
+# Snapshot every 5 minutes. Continuum does NOT save on shutdown, so this
+# interval is the worst-case amount of work lost on a reboot or power loss.
+set -g @continuum-save-interval '5'
+
+# Also save/restore pane scrollback, not just the layout.
+set -g @resurrect-capture-pane-contents 'on'
+
+# Restore nvim sessions (requires a Session.vim, e.g. via :mksession).
 set -g @resurrect-strategy-nvim 'session'
 
 # Tmux Yank — use system clipboard
@@ -158,3 +185,46 @@ set -g @tmux-dotbar-left "false"
 # INITIALIZE TPM (Keep at bottom)
 # ============================================================================
 run '~/.tmux/plugins/tpm/tpm'
+# ============================================================================
+# CLIPBOARD — keep this section LAST, after the TPM run line above
+# ============================================================================
+# Loaded last on purpose so nothing can clobber it. Binding these before
+# `run tpm` is silently useless: tmux-yank loads afterwards and overwrites
+# them (the same load-order trap that disabled tmux-continuum's autosave).
+#
+# Why there is no "Cmd+C to copy" binding: macOS never delivers Cmd to the
+# TTY, so tmux cannot see it, and Ctrl+C must stay SIGINT. Instead every
+# selection path below pipes directly into the system clipboard, so the text
+# is already there — no copy keystroke needed at all. Cmd+V still pastes
+# normally, since that is the terminal typing the clipboard into the pane.
+#
+# One portable command handles both platforms: pbcopy on macOS, falling back
+# to xclip when pbcopy is absent. Avoids nested if-shell blocks.
+
+# --- Keyboard: v to select, y to copy ---------------------------------------
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel \
+    "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+
+# --- Mouse drag: copies on release ------------------------------------------
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel \
+    "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+
+# --- Double-click a word / triple-click a line ------------------------------
+# tmux's defaults pipe to nothing, so these only reached the clipboard through
+# OSC 52 — which VS Code's integrated terminal handles inconsistently. The
+# if-shell guard is kept from the default binding: it passes the click through
+# to programs that do their own mouse handling (vim, less) instead of hijacking it.
+bind -T root DoubleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-word ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i" }
+bind -T root TripleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-line ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i" }
+bind -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+bind -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+
+# --- Paste the SYSTEM clipboard ---------------------------------------------
+# prefix + ] pastes tmux's own buffer, which drifts out of sync with what you
+# copied outside tmux. This always pastes what the OS clipboard holds.
+bind C-v run-shell \
+    "(pbpaste 2>/dev/null || xclip -selection clipboard -o) | tmux load-buffer - && tmux paste-buffer"
+
+# --- Escape leaves copy mode ------------------------------------------------
+# Default only clears the selection, leaving you stuck in copy mode.
+bind -T copy-mode-vi Escape send-keys -X cancel

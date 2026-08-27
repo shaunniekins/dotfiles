@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # ============================================================================
 # DOTFILES INSTALLATION SCRIPT
 # ============================================================================
@@ -176,7 +176,13 @@ echo "================================================="
 create_symlink() {
     local source=$1
     local target=$2
-    
+
+    # Never create a dangling symlink for a config that isn't in the repo.
+    if [ ! -e "$source" ]; then
+        echo "Skipping $target (source $source does not exist)"
+        return
+    fi
+
     # Remove existing file or symlink if OVERRIDE_EXISTING is true
     if [ "$OVERRIDE_EXISTING" = true ] && [ -e "$target" ]; then
         echo "Removing existing $target"
@@ -194,14 +200,12 @@ create_symlink() {
 
 # Create symlinks for zsh
 create_symlink $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
-create_symlink $DOTFILES/zsh/zprofile.symlink $HOME/.zprofile
 
 # Create symlinks for skhd
 # create_symlink $DOTFILES/skhd/skhdrc.symlink $HOME/.skhdrc
 
 # Create symlink for tmux configuration
 create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
-create_symlink $DOTFILES/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local
 
 
 # Create symlink for Aerospace on macOS
