@@ -7,6 +7,14 @@ ZSH_DISABLE_COMPFIX="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
+# Only remind about updates; never apply them automatically.
+# An auto-update interrupted midway (terminal closed, machine slept or shut
+# down) leaves ~/.oh-my-zsh with staged deletions and unresolved merge
+# conflicts — which shows up as "[oh-my-zsh] plugin 'git' not found" because
+# most of plugins/ is gone. Run `omz update` deliberately instead.
+zstyle ':omz:update' mode reminder
+zstyle ':omz:update' frequency 14
+
 # ============================================================================
 # PATH CONFIGURATION
 # ============================================================================

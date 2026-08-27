@@ -444,6 +444,34 @@ tmux kill-server
 > bound before it. See [Session Persistence](#-session-persistence) for the same trap breaking
 > autosave.
 
+### `[oh-my-zsh] plugin 'git' not found` on every new terminal
+
+`git` and `z` are **built-in** Oh-My-Zsh plugins, so this means the Oh-My-Zsh checkout itself is
+broken — usually an auto-update that was interrupted (terminal closed, machine slept or shut down),
+leaving staged deletions and unresolved merge conflicts behind.
+
+Diagnose:
+
+```bash
+ls ~/.oh-my-zsh/plugins/ | wc -l          # should be ~357, not a handful
+git -C ~/.oh-my-zsh status --porcelain | wc -l   # should be 0
+```
+
+Fix by restoring the checkout (safe — `custom/` is git-ignored, so your custom plugins survive):
+
+```bash
+git -C ~/.oh-my-zsh reset --hard HEAD
+```
+
+Then open a new terminal. If plugins are still missing, re-clone from scratch:
+
+```bash
+cd ~/.dotfiles && ./zsh/setup_plugins.sh
+```
+
+> **Prevention:** `zshrc.symlink` sets `zstyle ':omz:update' mode reminder`, so updates are never
+> applied automatically. Run `omz update` yourself when convenient — and let it finish.
+
 ### Plugins not working
 
 Reinstall plugins:
