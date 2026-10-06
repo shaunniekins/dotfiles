@@ -207,6 +207,37 @@ create_symlink $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
 # Create symlink for tmux configuration
 create_symlink $DOTFILES/tmux/tmux.conf.symlink $HOME/.tmux.conf
 
+echo "================================================="
+echo "Installing tmux plugins (session autosave)"
+echo "================================================="
+# tmux-resurrect + tmux-continuum autosave the layout every 5 minutes, but
+# only once TPM and the plugins are on disk — otherwise nothing is ever saved.
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [ ! -d "$TPM_DIR" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+fi
+# Same as prefix + I, without needing a running tmux session.
+"$TPM_DIR/bin/install_plugins"
+
+# Continuum refuses to autosave while it sees a second tmux server, so an
+# orphaned server (socket deleted, process still alive) silently disables it.
+tmux_servers=$(ps -u "$(id -u)" -o ppid=,tty=,command= | awk '$1 == 1 && $2 == "??" && $3 == "tmux"' | wc -l | tr -d ' ')
+if [ "$tmux_servers" -gt 1 ]; then
+    echo "⚠️  $tmux_servers tmux servers are running — continuum will NOT autosave."
+    echo "   Find the orphan with: ps -axo pid,ppid,tty,command | grep '[t]mux'"
+    echo "   Recover it with 'kill -USR1 <pid>' or end it with 'kill <pid>', then reload tmux."
+fi
+
+# Reload a running server so continuum hooks its autosave in right away.
+if tmux info >/dev/null 2>&1; then
+    tmux source-file "$HOME/.tmux.conf"
+    if tmux show -gv status-right | grep -q continuum_save; then
+        echo "✓ tmux autosave active"
+    else
+        echo "⚠️  tmux autosave hook missing from status-right — see README 'Session Persistence'"
+    fi
+fi
+
 
 # Create symlink for Aerospace on macOS
 if uname -s | grep Darwin; then

@@ -50,7 +50,10 @@ The installation script will:
 > **Note:** Oh-My-Zsh, `zsh-syntax-highlighting`, and Pure are **removed and re-cloned** on every
 > run — any manual changes inside them are lost.
 
-### Install TPM (required for tmux plugins)
+### tmux plugins (TPM)
+
+`install.sh` clones TPM into `~/.tmux/plugins/tpm`, installs the plugins, and reloads any running
+tmux server so session autosave starts immediately. To do it by hand:
 
 ```bash
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
