@@ -135,7 +135,11 @@ set -g @plugin 'tmux-plugins/tmux-continuum'
 # ============================================================================
 # Tmux Resurrect & Continuum
 # Restore the last saved environment automatically when the tmux server starts.
-set -g @continuum-restore 'on'
+# Done by tmux/continuum-guard.sh, not continuum: continuum skips the restore
+# (and its autosave) whenever several terminals launch tmux at once after a
+# reboot, mistaking the extra clients for a second tmux server.
+set -g @continuum-restore 'off'
+set -g @dotfiles-auto-restore 'on'
 
 # Snapshot every 5 minutes. Continuum does NOT save on shutdown, so this
 # interval is the worst-case amount of work lost on a reboot or power loss.
@@ -185,6 +189,10 @@ set -g @tmux-dotbar-left "false"
 # INITIALIZE TPM (Keep at bottom)
 # ============================================================================
 run '~/.tmux/plugins/tpm/tpm'
+
+# Re-installs continuum's autosave hook and performs the auto-restore, which
+# continuum itself drops on a multi-window login. Must run after TPM.
+run -b '~/.dotfiles/tmux/continuum-guard.sh'
 # ============================================================================
 # CLIPBOARD — keep this section LAST, after the TPM run line above
 # ============================================================================

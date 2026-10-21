@@ -92,7 +92,8 @@ Sessions, windows, panes, working directories, and pane scrollback survive a reb
 
 | Setting                              | Value | Meaning                                    |
 | ------------------------------------ | ----- | ------------------------------------------ |
-| `@continuum-restore`                 | `on`  | Auto-restore on tmux server start          |
+| `@dotfiles-auto-restore`             | `on`  | Auto-restore on tmux server start          |
+| `@continuum-restore`                 | `off` | Left off — `continuum-guard.sh` restores   |
 | `@continuum-save-interval`           | `5`   | Save every 5 minutes                       |
 | `@resurrect-capture-pane-contents`   | `on`  | Also save/restore pane scrollback          |
 
@@ -109,6 +110,12 @@ Sessions, windows, panes, working directories, and pane scrollback survive a reb
 > `status-interval`. Because tmux-dotbar unconditionally overwrites `status-right`, listing it last
 > silently wipes that hook — autosaving stops permanently and there is nothing left to restore after a
 > reboot. Keep `tmux-continuum` last in the plugin list.
+
+> **⚠️ Multi-window logins.** zshrc starts tmux in every new shell, so when the terminal reopens several
+> windows after a reboot, continuum counts the extra clients as a second tmux server and silently skips
+> both the restore and the autosave hook. `tmux/continuum-guard.sh` runs after TPM and does both
+> unconditionally. It also refuses to restore from an empty (0-byte) snapshot: it points `last` back at
+> the newest non-empty one.
 
 > **Note:** Continuum does not save on shutdown, so a reboot loses at most the last 5 minutes of layout
 > changes. Press `prefix + Ctrl-s` before a planned restart if you want an exact snapshot.
