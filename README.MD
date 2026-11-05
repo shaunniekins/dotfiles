@@ -111,11 +111,14 @@ Sessions, windows, panes, working directories, and pane scrollback survive a reb
 > silently wipes that hook — autosaving stops permanently and there is nothing left to restore after a
 > reboot. Keep `tmux-continuum` last in the plugin list.
 
-> **⚠️ Multi-window logins.** zshrc starts tmux in every new shell, so when the terminal reopens several
-> windows after a reboot, continuum counts the extra clients as a second tmux server and silently skips
-> both the restore and the autosave hook. `tmux/continuum-guard.sh` runs after TPM and does both
-> unconditionally. It also refuses to restore from an empty (0-byte) snapshot: it points `last` back at
-> the newest non-empty one.
+> **⚠️ Restore must not depend on TPM.** zshrc starts tmux in every new shell, so when the terminal
+> reopens several windows after a reboot, continuum counts the extra clients as a second tmux server and
+> silently skips both the restore and the autosave hook. And if a plugin hangs during boot (TPM froze
+> inside tmux-yank on 2026-10-31), nothing after the `run tpm` line ever runs. So
+> `tmux/continuum-guard.sh` is started with `run -b` **before** TPM. It restores once per tmux server
+> (on its first config load) using tmux-resurrect's scripts directly, and keeps continuum's autosave hook
+> in `status-right` even after tmux-dotbar overwrites it. It also refuses to restore from an empty
+> (0-byte) snapshot: it points `last` back at the newest non-empty one.
 
 > **Note:** Continuum does not save on shutdown, so a reboot loses at most the last 5 minutes of layout
 > changes. Press `prefix + Ctrl-s` before a planned restart if you want an exact snapshot.

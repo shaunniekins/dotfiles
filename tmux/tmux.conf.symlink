@@ -188,11 +188,12 @@ set -g @tmux-dotbar-left "false"
 # ============================================================================
 # INITIALIZE TPM (Keep at bottom)
 # ============================================================================
-run '~/.tmux/plugins/tpm/tpm'
-
-# Re-installs continuum's autosave hook and performs the auto-restore, which
-# continuum itself drops on a multi-window login. Must run after TPM.
+# Auto-restore + autosave hook, started BEFORE TPM and in the background so a
+# hung plugin can't block them: on the 2026-10-31 boot TPM froze inside
+# tmux-yank and nothing after this point ever ran. See continuum-guard.sh.
 run -b '~/.dotfiles/tmux/continuum-guard.sh'
+
+run '~/.tmux/plugins/tpm/tpm'
 # ============================================================================
 # CLIPBOARD — keep this section LAST, after the TPM run line above
 # ============================================================================
