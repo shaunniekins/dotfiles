@@ -457,6 +457,26 @@ tmux kill-server
 > bound before it. See [Session Persistence](#-session-persistence) for the same trap breaking
 > autosave.
 
+### Cmd+V in the terminal pastes a random single character
+
+Symptom: text copied in another app (browser, VS Code, an extension) pastes into the terminal as a
+stray `d`, `s`, `)` — or nothing — and only works after re-copying it, sometimes several times.
+
+Cause: with `mouse on`, clicking into the pane to focus it is often a 1px drag. tmux selects one
+character and copies it, clobbering the system clipboard. `tmux list-buffers` shows the evidence: a
+trail of `len=1` buffers. Two fixes are in place, and **both** are required:
+
+1. Mouse copy bindings pipe through `tmux/clipboard-copy.sh`, which drops selections with fewer
+   than 2 visible characters (they stay in tmux's own buffers, `prefix + =`).
+2. `set -g set-clipboard off`. With it `on`, tmux *also* sends every copy to the outer terminal as
+   OSC 52, and VS Code's terminal writes that straight to the clipboard — bypassing the guard.
+
+> **Side effect of `set-clipboard off`:** programs running *inside* tmux that copy via OSC 52 can no
+> longer reach the system clipboard — e.g. Neovim with `vim.g.clipboard = 'osc52'`, or yanking over
+> SSH from a remote shell. tmux's own copying (`y`, mouse drag, double/triple-click) is unaffected
+> because it uses `pbcopy`. If you need OSC 52 from an app, prefer making that app use `pbcopy`
+> locally; turning `set-clipboard` back `on` (or `external`) brings the random-character bug back.
+
 ### `[oh-my-zsh] plugin 'git' not found` on every new terminal
 
 `git` and `z` are **built-in** Oh-My-Zsh plugins, so this means the Oh-My-Zsh checkout itself is

@@ -33,11 +33,18 @@ set -ga terminal-overrides ",*-256color*:Tc"
 # This stops OSC color query responses from appearing as visible text.
 set -g allow-passthrough off
 
-# Enable tmux's built-in OSC 52 clipboard integration.
-# When you yank text in copy mode, tmux will use the OSC 52 escape
-# sequence to set the system clipboard directly through the terminal.
-# This works with iTerm2, Terminal.app, Alacritty, and most modern terminals.
-set -g set-clipboard on
+# Disable tmux's OSC 52 clipboard integration.
+# With it on, EVERY tmux copy — including the 1-character selections a click
+# to focus the pane produces — is also sent to the outer terminal as an OSC 52
+# sequence, and VS Code's terminal writes it straight to the macOS clipboard.
+# That bypasses the guard in clipboard-copy.sh and clobbers text copied in
+# other apps. All copy bindings below already pipe to pbcopy, so OSC 52 is
+# redundant here.
+#
+# SIDE EFFECT: programs inside tmux that copy via OSC 52 (e.g. Neovim's osc52
+# clipboard provider, or yanking over SSH) can no longer set the system
+# clipboard. See README → Troubleshooting → "Cmd+V ... random single character".
+set -g set-clipboard off
 
 # Set escape-time to 50ms (instead of 0).
 # A value of 0 prevents tmux from properly intercepting multi-byte escape sequences 
@@ -215,18 +222,21 @@ bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel \
     "pbcopy 2>/dev/null || xclip -selection clipboard -i"
 
 # --- Mouse drag: copies on release ------------------------------------------
+# Mouse paths go through clipboard-copy.sh, which drops 1-character
+# selections: a click to focus the pane is often a 1px drag, and copying
+# that stray character used to clobber text copied in other apps.
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel \
-    "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+    "~/.dotfiles/tmux/clipboard-copy.sh"
 
 # --- Double-click a word / triple-click a line ------------------------------
 # tmux's defaults pipe to nothing, so these only reached the clipboard through
 # OSC 52 — which VS Code's integrated terminal handles inconsistently. The
 # if-shell guard is kept from the default binding: it passes the click through
 # to programs that do their own mouse handling (vim, less) instead of hijacking it.
-bind -T root DoubleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-word ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i" }
-bind -T root TripleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-line ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i" }
-bind -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i"
-bind -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "pbcopy 2>/dev/null || xclip -selection clipboard -i"
+bind -T root DoubleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-word ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "~/.dotfiles/tmux/clipboard-copy.sh" }
+bind -T root TripleClick1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode -H ; send-keys -X select-line ; run-shell -d 0.3 ; send-keys -X copy-pipe-and-cancel "~/.dotfiles/tmux/clipboard-copy.sh" }
+bind -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "~/.dotfiles/tmux/clipboard-copy.sh"
+bind -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; run-shell -d 0.3 \; send-keys -X copy-pipe-and-cancel "~/.dotfiles/tmux/clipboard-copy.sh"
 
 # --- Paste the SYSTEM clipboard ---------------------------------------------
 # prefix + ] pastes tmux's own buffer, which drifts out of sync with what you
